@@ -28,7 +28,8 @@
 		      	<h3 class="mb-4 text-center">Sign In using Asgardeo</h3>
 		      	
 	            <div class="form-group">
-	            	<button type="submit" class="form-control btn btn-primary submit px-3">Sign In</button>
+	            	<button type="button" onclick="window.location.href='pages/home.jsp'" class="form-control btn btn-primary submit px-3">Sign In</button>
+	            	
 	            </div>
 	  
 	          <p class="w-100 text-center">&mdash; Don't have an Asgardeo Account &mdash;</p>

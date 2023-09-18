@@ -1,0 +1,17 @@
+@charset "ISO-8859-1";
+
+.land{
+	height:100vh
+	
+}
+.land h1 {
+    font-size: 50px;
+    
+}
+
+.care{
+	color:#CCCCFF;
+}
+.x{
+	font-size: 100px;
+}
