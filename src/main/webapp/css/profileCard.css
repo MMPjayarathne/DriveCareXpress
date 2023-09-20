@@ -94,7 +94,7 @@ path {
   
 /* CSS */
 .card button {
-  background-color: green;
+  background-color: green ;
   border: 1px solid #13aa52;
   border-radius: 4px;
   box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;

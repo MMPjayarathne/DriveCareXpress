@@ -28,7 +28,7 @@
 		      	<h3 class="mb-4 text-center">Sign In using Asgardeo</h3>
 		      	
 	            <div class="form-group">
-	            	<button type="button" onclick="window.location.href='pages/home.jsp'" class="form-control btn btn-primary submit px-3">Sign In</button>
+	            	<button type="button" onclick="window.location.href='https://api.asgardeo.io/t/learnmasith/oauth2/authorize?response_type=code&client_id=EGjadG6IuA1nPWue_CiKusnbBu8a&scope=openid&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2FDriveCareXpress%2Fauthorize.jsp'" class="form-control btn btn-primary submit px-3">Sign In</button>
 	            	
 	            </div>
 	  
