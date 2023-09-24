@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="89167f17-11eb-43b6-9bb7-fca1e0ac94e7" name="Changes" comment="created the navigation and profile card">
+    <list default="true" id="89167f17-11eb-43b6-9bb7-fca1e0ac94e7" name="Changes" comment="feat: Enable user attributes for OpenID">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/authorize.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/authorize.jsp" afterDir="false" />
     </list>
@@ -76,7 +76,14 @@
       <option name="project" value="LOCAL" />
       <updated>1695230461409</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="feat: Enable user attributes for OpenID">
+      <created>1695402291146</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1695402291146</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -95,6 +102,7 @@
     <MESSAGE value="initial commit" />
     <MESSAGE value="created the navigation and profile card" />
     <MESSAGE value="feat: Implement login using the Authorization Code flow" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Implement login using the Authorization Code flow" />
+    <MESSAGE value="feat: Enable user attributes for OpenID" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Enable user attributes for OpenID" />
   </component>
 </project>

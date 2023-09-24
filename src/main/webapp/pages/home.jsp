@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,8 +10,56 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="../css/nav.css">
 <link rel="stylesheet" href="../css/home.css">
-<link rel="stylesheet" href="../css/profileCard.css">	
+<link rel="stylesheet" href="../css/profileCard.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	
 <title>Home</title>
+
+ <script type="text/javascript">
+ 
+ 
+        const introspectionEndpointUrl = 'https://api.asgardeo.io/t/learnmasith/oauth2/introspect';
+        const accessToken = localStorage.getItem('access_token');
+        const idToken = localStorage.getItem('id_token');
+        
+        if(accessToken && idToken){
+        	
+        var settings = {
+            "url": "https://api.asgardeo.io/t/learnmasith/oauth2/userinfo",
+            "method": "GET",
+            "timeout": 0,
+            "headers": {
+                "Authorization": "Bearer " + accessToken
+            },
+        };
+
+        $.ajax(settings)
+            .done(function (response) {
+                console.log(response);
+                var username =  response.username;
+                var given_name = response.given_name;
+                var phone = response.phone_number;
+                var email = response.email;
+                var parts = given_name.split(' ');
+                var firstName = parts[0];
+                document.getElementById('givenName').textContent = given_name;
+                document.getElementById('name').textContent = firstName;
+                document.getElementById('email').textContent = email;
+                document.getElementById('phone').textContent = phone;
+                
+            })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                // Handle any errors here
+                console.error('Error:', errorThrown);
+                alert("Error in the authorization. Login again!");
+                window.location.href = "../index.jsp";
+            });
+        }
+        else{
+        	window.location.href = "../index.jsp";	
+        }
+    </script>
+
 </head>
 <body>
 
@@ -69,6 +119,9 @@
 
 <div class="land">
 	<h1>Drive<span class="care">Care</span><span class="x">X</span>press</h1>
+	
+	<h2 class="welcome">Wel<span class="come">come!</span></h2>
+	<h2 id="givenName"></h2>
 </div>
 
 
@@ -91,14 +144,14 @@
     </div>
     <div class="title-total">   
       <div class="title">User</div>
-      <h2>Morgan Sweeney</h2>
+      <h2 id = "name"></h2>
       <br>
   
   <div class="desc">
   
   <ul>
-  <li>Email : pramujaya@gmail.com</li>
-  <li>Contact: 078 596 4453</li>
+  <li>Email : <span id = 'email'></span></li>
+  <li>Contact: <span id = 'phone'></span></li>
   
   
   </ul>

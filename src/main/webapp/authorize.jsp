@@ -47,29 +47,21 @@
             // Make the POST request using jQuery AJAX
             $.ajax(url, requestOptions)
                 .done(function (data) {
-                    // Handle the response data here
+                  	// Handle the response data here
                     console.log(data.access_token);
                     var access_token  = data.access_token;
                    	var id_token = data.id_token;
-   
-                    var settings = {
-                    	    "url": "https://api.asgardeo.io/t/learnmasith/oauth2/userinfo",
-                    	    "method": "GET",
-                    	    "timeout": 0,
-                    	    "headers": {
-                    	        "Authorization": "Bearer "+ access_token
-                    	    },
-                    	};
-
-                    	$.ajax(settings).done(function (response) {
-                    	    console.log(response);
-                    	});
-                    console.log(data);
-                })
+                   	localStorage.setItem('access_token', access_token);
+                   	localStorage.setItem('id_token', id_token);
+            	    window.location.href = "pages/home.jsp";
+                })	
                 .fail(function (error) {
-                    // Handle any errors here
-                    console.error('Error:', error);
-                });
+                	// Handle any errors here
+                	console.error('Error:', error);
+                	window.location.href = "../index.jsp";
+                	});
+
+                
         }
 
         // Call the function to make the POST request

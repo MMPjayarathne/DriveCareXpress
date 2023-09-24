@@ -1,7 +1,13 @@
 @charset "ISO-8859-1";
 
 .land{
-	height:100vh
+	height:100vh;
+	padding-top: 20%;
+	
+}
+
+.welcome{
+	font-size: 45px;
 	
 }
 .land h1 {
@@ -9,7 +15,11 @@
     
 }
 
+
 .care{
+	color:#CCCCFF;
+}
+.come{
 	color:#CCCCFF;
 }
 .x{
