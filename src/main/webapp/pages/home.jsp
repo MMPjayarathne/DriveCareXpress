@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@ page import="java.sql.*" %>
+<%@ page import="java.sql.*, java.util.Date" %>
 <% 
     if (request.getParameter("submit") != null) {
         String location = request.getParameter("location");
@@ -8,9 +8,19 @@
         String vehicle_no = request.getParameter("vehicle");
         String message = request.getParameter("message");
         String userName = request.getParameter("usernameField");
+        
+    	
+		System.out.println("Username: " + userName);
+	    System.out.println("location: " + location);
+	    System.out.println("Mileage: " + mileageStr);
+	    System.out.println("Message: " + message);
+	    System.out.println("Vehicle No: " + vehicle_no);
 
         // Convert mileage to an integer
         int mileage = Integer.parseInt(mileageStr);
+        
+        Date currentDate = new Date();
+        Time currentTime = new Time(currentDate.getTime());
 
         // Database connection parameters
         String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
@@ -25,18 +35,19 @@
             Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
             
             // Create a SQL INSERT statement
-            String sql = "INSERT INTO vehicle_service (location, mileage, vehicle_no, message, username) VALUES (?, ?, ?, ?, ?)";
+             String sql = "INSERT INTO vehicle_service (date, time, location, mileage, vehicle_no, message, username) VALUES (?, ?, ?, ?, ?, ?, ?)";
             
             // Create a PreparedStatement
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             
             // Set the parameter values
-            preparedStatement.setString(1, location);
-            preparedStatement.setInt(2, mileage);
-            preparedStatement.setString(3, vehicle_no);
-            preparedStatement.setString(4, message);
-            preparedStatement.setString(5, userName);
-            
+           	preparedStatement.setDate(1, new java.sql.Date(currentDate.getTime())); // Current date
+            preparedStatement.setTime(2, currentTime); // Current time
+            preparedStatement.setString(3, location);
+            preparedStatement.setInt(4, mileage);
+            preparedStatement.setString(5, vehicle_no);
+            preparedStatement.setString(6, message);
+            preparedStatement.setString(7, userName);
             // Execute the INSERT statement
             int rowsInserted = preparedStatement.executeUpdate();
             
