@@ -25,3 +25,12 @@
 .x{
 	font-size: 100px;
 }
+
+#info{
+	height:100vh;
+}
+
+#service{
+	height:100vh;
+	width:50%;
+}

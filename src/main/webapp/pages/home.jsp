@@ -1,5 +1,62 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ page import="java.sql.*" %>
+<% 
+    if (request.getParameter("submit") != null) {
+        String location = request.getParameter("location");
+        String mileageStr = request.getParameter("mileage");
+        String vehicle_no = request.getParameter("vehicle");
+        String message = request.getParameter("message");
+        String userName = request.getParameter("usernameField");
+
+        // Convert mileage to an integer
+        int mileage = Integer.parseInt(mileageStr);
+
+        // Database connection parameters
+        String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
+        String dbUser = "isec";
+        String dbPassword = "EUHHaYAmtzbv";
+
+        try {
+            // Load the MySQL JDBC driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            
+            // Establish a database connection
+            Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+            
+            // Create a SQL INSERT statement
+            String sql = "INSERT INTO vehicle_service (location, mileage, vehicle_no, message, username) VALUES (?, ?, ?, ?, ?)";
+            
+            // Create a PreparedStatement
+            PreparedStatement preparedStatement = conn.prepareStatement(sql);
+            
+            // Set the parameter values
+            preparedStatement.setString(1, location);
+            preparedStatement.setInt(2, mileage);
+            preparedStatement.setString(3, vehicle_no);
+            preparedStatement.setString(4, message);
+            preparedStatement.setString(5, userName);
+            
+            // Execute the INSERT statement
+            int rowsInserted = preparedStatement.executeUpdate();
+            
+            // Check if the insertion was successful
+            if (rowsInserted > 0) {
+                out.println("Data inserted successfully.");
+            } else {
+                out.println("Failed to insert data.");
+            }
+            
+            // Close the database connection
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+%>
+
 
 
 <!DOCTYPE html>
@@ -11,6 +68,7 @@
 <link rel="stylesheet" href="../css/nav.css">
 <link rel="stylesheet" href="../css/home.css">
 <link rel="stylesheet" href="../css/profileCard.css">
+<link rel="stylesheet" href="../css/service.css">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
 <title>Home</title>
@@ -47,6 +105,11 @@
                 document.getElementById('email').textContent = email;
                 document.getElementById('phone').textContent = phone;
                 
+                document.getElementById('submit').addEventListener('click', function () {
+                    // Set the username as a hidden field value in the form
+                    document.getElementById('usernameField').value = username;
+                });
+                
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
                 // Handle any errors here
@@ -76,7 +139,7 @@
     </span>
   </a>
 
-  <a href="#">
+  <a href="#service">
     <svg viewBox="0 0 100 100">
       <g transform="translate(5 5) scale(0.9 0.9)">
         <path d="M 50 35 a 20 20 0 0 1 50 0 q 0 25 -50 60 q -50 -35 -50 -60 a 25 25 0 0 1 50 0" stroke="currentColor"
@@ -169,6 +232,64 @@
   
 </div>
 
+
+</section>
+
+<section id="service">
+
+<div class="content">
+	<div class="container">
+	      <div class="row align-items-stretch no-gutters contact-wrap">
+	        <div class="col-md-12">
+	          <div class="form h-100">
+	            <h3>Service</h3>
+	            <form class="mb-5" method="post" id="contactForm" name="contactForm">
+	              <div class="row">
+	                <div class="col-md-6 form-group mb-3">
+	                  <label for="" class="col-form-label">Location *</label>
+	                  <input type="text" class="form-control" name="location" id="location" placeholder="Your Location">
+	                </div>
+	                <div class="col-md-6 form-group mb-3">
+	                  <label for="" class="col-form-label">Mileage *</label>
+	                  <input type="text" class="form-control" name="mileage" id="mileage"  placeholder="Enter the total mileage">
+	                </div>
+	                 <input type="hidden" id="usernameField" name="usernameField" value="">
+	              </div>
+	
+	              <div class="row">
+	                <div class="col-md-12 form-group mb-3">
+	                  <label for="budget" class="col-form-label">Vehicle</label>
+	                  <select class="custom-select" id="vehicle" name="vehicle">
+						    <option selected>Choose...</option>
+						    <option value="wagon001"> Suzuki-WagonR(2015)</option>
+						    <option value="prius002">Toyota-Prius(2012)</option>
+						    <option value="alto034">Suzuki-Alto(2019)</option>
+						    <option value="dolphin004">Dolphin(2011) </option>
+						    <option value="fit005 >">Honda-Fit(2020) ></option>
+						  </select>
+	                </div>
+	              </div>
+	
+	              <div class="row">
+	                <div class="col-md-12 form-group mb-3">
+	                  <label for="message" class="col-form-label">Message *</label>
+	                  <textarea class="form-control" name="message" id="message" cols="30" rows="4"  placeholder="Write your message"></textarea>
+	                </div>
+	              </div>
+	              <div class="row">
+	                <div class="col-md-12 form-group">
+	                <br>
+	                  <input type="submit" value="Submit" id="submit" name="submit" class="btn btn-primary rounded-0 py-2 px-4">
+	                  <span class="submitting"></span>
+	                </div>
+	              </div>
+	            </form>
+	
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	</div>
 
 </section>
 

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="89167f17-11eb-43b6-9bb7-fca1e0ac94e7" name="Changes" comment="feat: Enable user attributes for OpenID">
+    <list default="true" id="89167f17-11eb-43b6-9bb7-fca1e0ac94e7" name="Changes" comment="feat: Display user information">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/authorize.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/authorize.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/css/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/css/home.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/home.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/home.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +84,14 @@
       <option name="project" value="LOCAL" />
       <updated>1695402291146</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="feat: Display user information">
+      <created>1695572480931</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1695572480931</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -103,6 +111,7 @@
     <MESSAGE value="created the navigation and profile card" />
     <MESSAGE value="feat: Implement login using the Authorization Code flow" />
     <MESSAGE value="feat: Enable user attributes for OpenID" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Enable user attributes for OpenID" />
+    <MESSAGE value="feat: Display user information" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Display user information" />
   </component>
 </project>
