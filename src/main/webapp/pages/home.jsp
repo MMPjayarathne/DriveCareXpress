@@ -2,6 +2,40 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*, java.util.Date" %>
 <% 
+
+		// Database connection parameters
+		String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
+		String dbUser = "isec";
+		String dbPassword = "EUHHaYAmtzbv";
+		ResultSet resultSet = null;
+
+try {
+    // Load the MySQL JDBC driver
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    
+    // Establish a database connection
+    Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+    
+    // Create a SQL SELECT query
+    String sql = "SELECT * FROM vehicle_service WHERE username = ?";
+    
+    // Create a PreparedStatement
+    PreparedStatement preparedStatement = conn.prepareStatement(sql);
+    
+    // Set the parameter value (username)
+    preparedStatement.setString(1,"masith@gmail.com");
+    
+    // Execute the SELECT query
+    resultSet = preparedStatement.executeQuery();
+
+		} catch (ClassNotFoundException e) {
+		e.printStackTrace();
+		} catch (SQLException e) {
+		e.printStackTrace();
+		}
+    
+    
+    
     if (request.getParameter("submit") != null) {
         String location = request.getParameter("location");
         String mileageStr = request.getParameter("mileage");
@@ -9,12 +43,12 @@
         String message = request.getParameter("message");
         String userName = request.getParameter("usernameField");
         
-    	
+    	/*
 		System.out.println("Username: " + userName);
 	    System.out.println("location: " + location);
 	    System.out.println("Mileage: " + mileageStr);
 	    System.out.println("Message: " + message);
-	    System.out.println("Vehicle No: " + vehicle_no);
+	    System.out.println("Vehicle No: " + vehicle_no);*/
 
         // Convert mileage to an integer
         int mileage = Integer.parseInt(mileageStr);
@@ -22,10 +56,7 @@
         Date currentDate = new Date();
         Time currentTime = new Time(currentDate.getTime());
 
-        // Database connection parameters
-        String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
-        String dbUser = "isec";
-        String dbPassword = "EUHHaYAmtzbv";
+    
 
         try {
             // Load the MySQL JDBC driver
@@ -162,7 +193,7 @@
     </span>
   </a>
 
-  <a href="#">
+  <a href="#history">
     <svg viewBox="0 0 100 100">
       <g transform="translate(5 5) scale(0.9 0.9)">
         <circle cx="45" cy="38" r="38" stroke="currentColor" stroke-width="10" fill="none" />
@@ -276,7 +307,7 @@
 						    <option value="prius002">Toyota-Prius(2012)</option>
 						    <option value="alto034">Suzuki-Alto(2019)</option>
 						    <option value="dolphin004">Dolphin(2011) </option>
-						    <option value="fit005 >">Honda-Fit(2020) ></option>
+						    <option value="fit005">Honda-Fit(2020) </option>
 						  </select>
 	                </div>
 	              </div>
@@ -301,6 +332,50 @@
 	      </div>
 	    </div>
 	</div>
+
+</section>
+
+<section id = "history">
+
+<table>
+        <tr>
+            <th>Booking ID</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Location</th>
+            <th>Mileage</th>
+            <th>Vehicle Number</th>
+            <th>Message</th>
+        </tr>
+        <%
+        if (resultSet != null) {
+            while (resultSet.next()) {
+                int bookingId = resultSet.getInt("booking_id");
+                Date date = resultSet.getDate("date");
+                Time time = resultSet.getTime("time");
+                String location = resultSet.getString("location");
+                int mileage = resultSet.getInt("mileage");
+                String vehicleNo = resultSet.getString("vehicle_no");
+                String message = resultSet.getString("message");
+                
+            
+        %>
+        <tr>
+            <td><%= bookingId %></td>
+            <td><%= date %></td>
+            <td><%= time %></td>
+            <td><%= location %></td>
+            <td><%= mileage %></td>
+            <td><%= vehicleNo %></td>
+            <td><%= message %></td>
+        </tr>
+        <% 
+            }}
+            
+    %>
+    </table>
+
+
 
 </section>
 

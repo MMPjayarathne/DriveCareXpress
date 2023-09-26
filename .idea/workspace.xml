@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="89167f17-11eb-43b6-9bb7-fca1e0ac94e7" name="Changes" comment="feat: feat created the service form and established connection with the database">
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/home.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/home.jsp" afterDir="false" />
+    <list default="true" id="89167f17-11eb-43b6-9bb7-fca1e0ac94e7" name="Changes" comment="feat: successfully inserted values to the table">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +96,14 @@
       <option name="project" value="LOCAL" />
       <updated>1695665802722</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="feat: successfully inserted values to the table">
+      <created>1695666472901</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1695666472901</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -118,6 +125,7 @@
     <MESSAGE value="feat: Enable user attributes for OpenID" />
     <MESSAGE value="feat: Display user information" />
     <MESSAGE value="feat: feat created the service form and established connection with the database" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: feat created the service form and established connection with the database" />
+    <MESSAGE value="feat: successfully inserted values to the table" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: successfully inserted values to the table" />
   </component>
 </project>
