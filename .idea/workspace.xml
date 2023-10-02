@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="89167f17-11eb-43b6-9bb7-fca1e0ac94e7" name="Changes" comment="feat: successfully inserted values to the table">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="89167f17-11eb-43b6-9bb7-fca1e0ac94e7" name="Changes" comment="feat: retrieved data from the database" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -103,7 +101,14 @@
       <option name="project" value="LOCAL" />
       <updated>1695666472901</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="feat: retrieved data from the database">
+      <created>1695752103426</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1695752103426</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -126,6 +131,7 @@
     <MESSAGE value="feat: Display user information" />
     <MESSAGE value="feat: feat created the service form and established connection with the database" />
     <MESSAGE value="feat: successfully inserted values to the table" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: successfully inserted values to the table" />
+    <MESSAGE value="feat: retrieved data from the database" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: retrieved data from the database" />
   </component>
 </project>

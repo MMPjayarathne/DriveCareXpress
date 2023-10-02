@@ -1,32 +1,47 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*, java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <% 
 
 		// Database connection parameters
 		String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
 		String dbUser = "isec";
 		String dbPassword = "EUHHaYAmtzbv";
-		ResultSet resultSet = null;
+		ResultSet pastResultSet = null;
+		ResultSet futureResultSet = null;
 
 try {
     // Load the MySQL JDBC driver
     Class.forName("com.mysql.cj.jdbc.Driver");
     
     // Establish a database connection
-    Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+ Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
     
-    // Create a SQL SELECT query
-    String sql = "SELECT * FROM vehicle_service WHERE username = ?";
+    // Create a SQL SELECT query for past reservations
+    String pastSql = "SELECT * FROM vehicle_service WHERE username = ? AND CONCAT(date, ' ', time) < ? ORDER BY date, time";
     
-    // Create a PreparedStatement
-    PreparedStatement preparedStatement = conn.prepareStatement(sql);
+    // Create a SQL SELECT query for future reservations
+    String futureSql = "SELECT * FROM vehicle_service WHERE username = ? AND CONCAT(date, ' ', time) >= ? ORDER BY date, time";
+    
+    // Create PreparedStatements for both queries
+    PreparedStatement pastPreparedStatement = conn.prepareStatement(pastSql);
+    PreparedStatement futurePreparedStatement = conn.prepareStatement(futureSql);
     
     // Set the parameter value (username)
-    preparedStatement.setString(1,"masith@gmail.com");
+    String username = "masith@gmail.com";
+    pastPreparedStatement.setString(1, username);
+    futurePreparedStatement.setString(1, username);
     
-    // Execute the SELECT query
-    resultSet = preparedStatement.executeQuery();
+    // Set the parameter value (current date and time)
+    SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    String currentDateTime = dateTimeFormat.format(new Date());
+    pastPreparedStatement.setString(2, currentDateTime);
+    futurePreparedStatement.setString(2, currentDateTime);
+    
+    // Execute the SELECT queries
+    pastResultSet = pastPreparedStatement.executeQuery();
+    futureResultSet = futurePreparedStatement.executeQuery();
 
 		} catch (ClassNotFoundException e) {
 		e.printStackTrace();
@@ -42,7 +57,8 @@ try {
         String vehicle_no = request.getParameter("vehicle");
         String message = request.getParameter("message");
         String userName = request.getParameter("usernameField");
-        
+        String dateStr = request.getParameter("date");
+        String timeStr = request.getParameter("time");
     	/*
 		System.out.println("Username: " + userName);
 	    System.out.println("location: " + location);
@@ -53,9 +69,30 @@ try {
         // Convert mileage to an integer
         int mileage = Integer.parseInt(mileageStr);
         
-        Date currentDate = new Date();
-        Time currentTime = new Time(currentDate.getTime());
+	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	    Date date = dateFormat.parse(dateStr);
+	    
+	    Time time = null;
 
+	    try {
+	        // Check if the timeStr matches the expected format "hh:mm"
+	        if (timeStr.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
+	            // If it matches, add ":00" to the end of the string to match SQL TIME format
+	            timeStr += ":00";
+	            // Create a Time object
+	            time = Time.valueOf(timeStr);
+	        } else {
+	            // Handle invalid time format
+	            out.println("Invalid time format. Please enter time in hh:mm format.");
+	        }
+	    } catch (IllegalArgumentException e) {
+	        out.println("Error parsing time: " + e.getMessage());
+	    }
+
+	    if (time != null) {
+	        // Time object is valid, you can use it
+	        out.println("Parsed Time: " + time);
+	    }
     
 
         try {
@@ -72,8 +109,8 @@ try {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             
             // Set the parameter values
-           	preparedStatement.setDate(1, new java.sql.Date(currentDate.getTime())); // Current date
-            preparedStatement.setTime(2, currentTime); // Current time
+           	preparedStatement.setDate(1, new java.sql.Date(date.getTime())); // Current date
+            preparedStatement.setTime(2, time); // Current time
             preparedStatement.setString(3, location);
             preparedStatement.setInt(4, mileage);
             preparedStatement.setString(5, vehicle_no);
@@ -84,7 +121,9 @@ try {
             
             // Check if the insertion was successful
             if (rowsInserted > 0) {
-                out.println("Data inserted successfully.");
+            	out.println("Data inserted successfully.");
+                response.sendRedirect(request.getRequestURI());
+                
             } else {
                 out.println("Failed to insert data.");
             }
@@ -289,29 +328,70 @@ try {
 	              <div class="row">
 	                <div class="col-md-6 form-group mb-3">
 	                  <label for="" class="col-form-label">Location *</label>
-	                  <input type="text" class="form-control" name="location" id="location" placeholder="Your Location">
-	                </div>
+	                  <select class="custom-select" id="location" name="location" required>
+						    <option selected>Choose...</option>
+						    <option value="Colombo">Colombo</option>
+				            <option value="Gampaha">Gampaha</option>
+				            <option value="Kalutara">Kalutara</option>
+				            <option value="Kandy">Kandy</option>
+				            <option value="Matale">Matale</option>
+				            <option value="Nuwara Eliya">Nuwara Eliya</option>
+				            <option value="Galle">Galle</option>
+				            <option value="Matara">Matara</option>
+				            <option value="Hambantota">Hambantota</option>
+				            <option value="Jaffna">Jaffna</option>
+				            <option value="Kilinochchi">Kilinochchi</option>
+				            <option value="Mannar">Mannar</option>
+				            <option value="Vavuniya">Vavuniya</option>
+				            <option value="Mullaitivu">Mullaitivu</option>
+				            <option value="Batticaloa">Batticaloa</option>
+				            <option value="Ampara">Ampara</option>
+				            <option value="Trincomalee">Trincomalee</option>
+				            <option value="Kurunegala">Kurunegala</option>
+				            <option value="Puttalam">Puttalam</option>
+				            <option value="Anuradhapura">Anuradhapura</option>
+				            <option value="Polonnaruwa">Polonnaruwa</option>
+				            <option value="Badulla">Badulla</option>
+				            <option value="Monaragala">Monaragala</option>
+				            <option value="Ratnapura">Ratnapura</option>
+				            <option value="Kegalle">Kegalle</option>
+						  </select>
+
+					 </div>
+					 <br>
 	                <div class="col-md-6 form-group mb-3">
 	                  <label for="" class="col-form-label">Mileage *</label>
-	                  <input type="text" class="form-control" name="mileage" id="mileage"  placeholder="Enter the total mileage">
+	                  <input type="text" class="form-control" name="mileage" id="mileage"  placeholder="Enter the total mileage" required>
 	                </div>
-	                 <input type="hidden" id="usernameField" name="usernameField" value="">
+	                <br>
+	                <div class="col-md-6 form-group mb-3">
+	                   <label for="birthday" class="col-form-label">Date *</label>
+  						<input type="date" id="date" name="date" required>
+	                </div>
+	                <br>
+	                <div class="col-md-6 form-group mb-3">
+	                   <label for="time" class="col-form-label">Select a time * </label>
+  					<input type="time" id="time" name="time" required>
+	                </div>
+	                
+	                 <input type="hidden" id="usernameField" name="usernameField" value="" >
 	              </div>
+	              <br>
 	
 	              <div class="row">
 	                <div class="col-md-12 form-group mb-3">
 	                  <label for="budget" class="col-form-label">Vehicle</label>
-	                  <select class="custom-select" id="vehicle" name="vehicle">
+	                  <select class="custom-select" id="vehicle" name="vehicle" required>
 						    <option selected>Choose...</option>
-						    <option value="wagon001"> Suzuki-WagonR(2015)</option>
-						    <option value="prius002">Toyota-Prius(2012)</option>
-						    <option value="alto034">Suzuki-Alto(2019)</option>
-						    <option value="dolphin004">Dolphin(2011) </option>
-						    <option value="fit005">Honda-Fit(2020) </option>
+						    <option value="AAA-001"> Suzuki-WagonR(2015)</option>
+						    <option value="ABC-002">Toyota-Prius(2012)</option>
+						    <option value="FG-034">Suzuki-Alto(2019)</option>
+						    <option value="QA-004">Dolphin(2011) </option>
+						    <option value="CAT-005">Honda-Fit(2020) </option>
 						  </select>
 	                </div>
 	              </div>
-	
+					<br>
 	              <div class="row">
 	                <div class="col-md-12 form-group mb-3">
 	                  <label for="message" class="col-form-label">Message *</label>
@@ -336,7 +416,9 @@ try {
 </section>
 
 <section id = "history">
-
+<div class="past">
+<h2 id="tableName">Past Reservations</h2>
+<br>
 <table>
         <tr>
             <th>Booking ID</th>
@@ -348,15 +430,23 @@ try {
             <th>Message</th>
         </tr>
         <%
-        if (resultSet != null) {
-            while (resultSet.next()) {
-                int bookingId = resultSet.getInt("booking_id");
-                Date date = resultSet.getDate("date");
-                Time time = resultSet.getTime("time");
-                String location = resultSet.getString("location");
-                int mileage = resultSet.getInt("mileage");
-                String vehicleNo = resultSet.getString("vehicle_no");
-                String message = resultSet.getString("message");
+        
+        Date currentDate = new Date();
+	          
+        if (pastResultSet != null) {
+        	
+            while (pastResultSet.next()) {
+            	
+            	Date date = pastResultSet.getDate("date");
+            	if(!date.before(currentDate)){
+            		 continue;
+            	}
+                int bookingId = pastResultSet.getInt("booking_id");
+                Time time = pastResultSet.getTime("time");
+                String location = pastResultSet.getString("location");
+                int mileage = pastResultSet.getInt("mileage");
+                String vehicleNo = pastResultSet.getString("vehicle_no");
+                String message = pastResultSet.getString("message");
                 
             
         %>
@@ -374,6 +464,57 @@ try {
             
     %>
     </table>
+</div>
+
+
+<div class="future">
+<h2 id="tableName">Future Reservations</h2>
+<br>
+<table>
+        <tr>
+            <th>Booking ID</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Location</th>
+            <th>Mileage</th>
+            <th>Vehicle Number</th>
+            <th>Message</th>
+        </tr>
+        <%
+	           
+        
+        if (futureResultSet != null) {
+            while (futureResultSet.next()) {
+            	
+            	Date date = futureResultSet.getDate("date");
+            	
+            	if(date.before(currentDate)){
+            		 continue;
+            	}
+                int bookingId = futureResultSet.getInt("booking_id");
+                Time time = futureResultSet.getTime("time");
+                String location = futureResultSet.getString("location");
+                int mileage = futureResultSet.getInt("mileage");
+                String vehicleNo = futureResultSet.getString("vehicle_no");
+                String message = futureResultSet.getString("message");
+                
+            
+        %>
+        <tr>
+            <td><%= bookingId %></td>
+            <td><%= date %></td>
+            <td><%= time %></td>
+            <td><%= location %></td>
+            <td><%= mileage %></td>
+            <td><%= vehicleNo %></td>
+            <td><%= message %></td>
+        </tr>
+        <% 
+            }}
+            
+    %>
+    </table>
+</div>
 
 
 
