@@ -2,53 +2,36 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*, java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
+<%@ page import="com.services.jsp.*" %>
 <% 
 
+		ServiceDAO service = new ServiceDAO();
 		// Database connection parameters
 		String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
 		String dbUser = "isec";
 		String dbPassword = "EUHHaYAmtzbv";
 		ResultSet pastResultSet = null;
 		ResultSet futureResultSet = null;
+		
+	   
+	    
+		
+		try {
+		    // Load the MySQL JDBC driver
+		    Class.forName("com.mysql.cj.jdbc.Driver");
+		    
+		    // Establish a database connection
+		    Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+		    
+		    pastResultSet = service.getPastServices("masith@gmail.com",conn);
+			futureResultSet = service.getFutureServices("masith@gmail.com",conn);
+			
+			
+			
+			
+			
+		
 
-try {
-    // Load the MySQL JDBC driver
-    Class.forName("com.mysql.cj.jdbc.Driver");
-    
-    // Establish a database connection
- Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-    
-    // Create a SQL SELECT query for past reservations
-    String pastSql = "SELECT * FROM vehicle_service WHERE username = ? AND CONCAT(date, ' ', time) < ? ORDER BY date, time";
-    
-    // Create a SQL SELECT query for future reservations
-    String futureSql = "SELECT * FROM vehicle_service WHERE username = ? AND CONCAT(date, ' ', time) >= ? ORDER BY date, time";
-    
-    // Create PreparedStatements for both queries
-    PreparedStatement pastPreparedStatement = conn.prepareStatement(pastSql);
-    PreparedStatement futurePreparedStatement = conn.prepareStatement(futureSql);
-    
-    // Set the parameter value (username)
-    String username = "masith@gmail.com";
-    pastPreparedStatement.setString(1, username);
-    futurePreparedStatement.setString(1, username);
-    
-    // Set the parameter value (current date and time)
-    SimpleDateFormat dateTimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    String currentDateTime = dateTimeFormat.format(new Date());
-    pastPreparedStatement.setString(2, currentDateTime);
-    futurePreparedStatement.setString(2, currentDateTime);
-    
-    // Execute the SELECT queries
-    pastResultSet = pastPreparedStatement.executeQuery();
-    futureResultSet = futurePreparedStatement.executeQuery();
-
-		} catch (ClassNotFoundException e) {
-		e.printStackTrace();
-		} catch (SQLException e) {
-		e.printStackTrace();
-		}
-    
     
     
     if (request.getParameter("submit") != null) {
@@ -67,75 +50,53 @@ try {
 	    System.out.println("Vehicle No: " + vehicle_no);*/
 
         // Convert mileage to an integer
-        int mileage = Integer.parseInt(mileageStr);
+        int rowsInserted =  service.insertService(location,  mileageStr, vehicle_no,  message,  userName,  dateStr,  timeStr, conn);
+        if (rowsInserted > 0) {
+         	out.println("Data inserted successfully.");
+             response.sendRedirect(request.getRequestURI());
+             
+         }else if(rowsInserted == -1){
+        	 out.println("Invalid time format. Please enter time in hh:mm format.");
+         }
+         else if(rowsInserted == -2){
+        	 out.println("Error parsing time");
+        	 	   
+         }
         
-	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-	    Date date = dateFormat.parse(dateStr);
-	    
-	    Time time = null;
-
-	    try {
-	        // Check if the timeStr matches the expected format "hh:mm"
-	        if (timeStr.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
-	            // If it matches, add ":00" to the end of the string to match SQL TIME format
-	            timeStr += ":00";
-	            // Create a Time object
-	            time = Time.valueOf(timeStr);
-	        } else {
-	            // Handle invalid time format
-	            out.println("Invalid time format. Please enter time in hh:mm format.");
-	        }
-	    } catch (IllegalArgumentException e) {
-	        out.println("Error parsing time: " + e.getMessage());
+        else {
+        	 out.println("Failed to insert data.");
+         }
+         
+    }
+    
+    if (request.getParameter("delete") != null){
+    	
+    	String bookingId = request.getParameter("bookingID");
+    	
+    	int id = Integer.parseInt(bookingId);
+    	//System.out.println("Hello");
+    	//out.println(bookingId);
+    	int rowsAffected = service.deleteServices(id,conn);
+    	
+    	if (rowsAffected > 0) {
+    		 response.sendRedirect(request.getRequestURI());
+	         
+	    }else if(rowsAffected == -1){
+	    	out.println("Error in the databse. Try again later");
+	    } else {
+	        out.println("No data found for the given booking ID");
 	    }
-
-	    if (time != null) {
-	        // Time object is valid, you can use it
-	        out.println("Parsed Time: " + time);
-	    }
+    	
+    	
+    } 
     
 
-        try {
-            // Load the MySQL JDBC driver
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            
-            // Establish a database connection
-            Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-            
-            // Create a SQL INSERT statement
-             String sql = "INSERT INTO vehicle_service (date, time, location, mileage, vehicle_no, message, username) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            
-            // Create a PreparedStatement
-            PreparedStatement preparedStatement = conn.prepareStatement(sql);
-            
-            // Set the parameter values
-           	preparedStatement.setDate(1, new java.sql.Date(date.getTime())); // Current date
-            preparedStatement.setTime(2, time); // Current time
-            preparedStatement.setString(3, location);
-            preparedStatement.setInt(4, mileage);
-            preparedStatement.setString(5, vehicle_no);
-            preparedStatement.setString(6, message);
-            preparedStatement.setString(7, userName);
-            // Execute the INSERT statement
-            int rowsInserted = preparedStatement.executeUpdate();
-            
-            // Check if the insertion was successful
-            if (rowsInserted > 0) {
-            	out.println("Data inserted successfully.");
-                response.sendRedirect(request.getRequestURI());
-                
-            } else {
-                out.println("Failed to insert data.");
-            }
-            
-            // Close the database connection
-            conn.close();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+	
+		}catch (ClassNotFoundException e) {
+			e.printStackTrace();
+			
+			}
+		
 %>
 
 
@@ -479,6 +440,7 @@ try {
             <th>Mileage</th>
             <th>Vehicle Number</th>
             <th>Message</th>
+            <th>Action</th>
         </tr>
         <%
 	           
@@ -508,6 +470,7 @@ try {
             <td><%= mileage %></td>
             <td><%= vehicleNo %></td>
             <td><%= message %></td>
+            <td><button onclick="document.getElementById('id01').style.display='block';  document.getElementById('bookingID').value = <%= bookingId %>;" class="delete">Delete</button></td>
         </tr>
         <% 
             }}
@@ -516,12 +479,27 @@ try {
     </table>
 </div>
 
+<div id="id01" class="modal">
+  <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
+  <form class="modal-content" method="post" >
+    <div class="container2">
+      <h1>Delete Reservation</h1>
+      <p>Are you sure you want to delete your reservation?</p>
+    	<input type="hidden" id="bookingID" name="bookingID" value="" >
+      <div class="clearfix">
+        <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
+        <input type="submit" value="Delete" name="delete" onclick="document.getElementById('id01').style.display='none'" class="deletebtn">
+      </div>
+    </div>
+  </form>
+</div>
+
 
 
 </section>
 
 
-<script type="text/javascript"  src="../js/nav.js"></script>
+<script type="text/javascript"  src="../js/home.js"></script>
 </body>
 
 
