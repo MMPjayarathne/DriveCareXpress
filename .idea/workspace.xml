@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="89167f17-11eb-43b6-9bb7-fca1e0ac94e7" name="Changes" comment="feat: separate past and future reservations">
+    <list default="true" id="89167f17-11eb-43b6-9bb7-fca1e0ac94e7" name="Changes" comment="feat: add delete service function and formatted the business logics">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/services/jsp/ServiceDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/services/jsp/ServiceDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/webapp/authorize.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/authorize.jsp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/css/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/css/home.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/webapp/js/nav.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/js/home.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/webapp/pages/home.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/webapp/pages/home.jsp" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -120,7 +121,14 @@
       <option name="project" value="LOCAL" />
       <updated>1696276463807</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="feat: add delete service function and formatted the business logics">
+      <created>1696355746136</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1696355746136</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -145,6 +153,7 @@
     <MESSAGE value="feat: successfully inserted values to the table" />
     <MESSAGE value="feat: retrieved data from the database" />
     <MESSAGE value="feat: separate past and future reservations" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: separate past and future reservations" />
+    <MESSAGE value="feat: add delete service function and formatted the business logics" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add delete service function and formatted the business logics" />
   </component>
 </project>

@@ -1,5 +1,6 @@
 package com.services.jsp;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,11 +16,19 @@ public class ServiceDAO {
 	String dbUser = "isec";
 	String dbPassword = "EUHHaYAmtzbv";
    
-    public ResultSet getFutureServices(String username,Connection conn){
+    public ResultSet getFutureServices(String username) throws ClassNotFoundException, SQLException{
     	
 		ResultSet futureResultSet = null;
+		Connection conn = null;
 
 	try {
+		 // Load the MySQL JDBC driver
+	    Class.forName("com.mysql.cj.jdbc.Driver");
+	    
+	    // Establish a database connection
+	    conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+	  
+
 
 	    // Create a SQL SELECT query for future reservations
 	    String futureSql = "SELECT * FROM vehicle_service WHERE username = ? AND CONCAT(date, ' ', time) >= ? ORDER BY date, time";
@@ -35,24 +44,29 @@ public class ServiceDAO {
 	    
 	    // Execute the SELECT queries
 		 futureResultSet = futurePreparedStatement.executeQuery();
-		
-		 return futureResultSet;
 		 
 	
-			}catch (SQLException e) {
+		}catch (SQLException e) {
 			e.printStackTrace();
-			return futureResultSet;
+			
 			}
+	return futureResultSet;
         
     }
     
-public ResultSet getPastServices(String username,Connection conn) {
+public ResultSet getPastServices(String username) throws ClassNotFoundException, SQLException {
     	
 			ResultSet pastResultSet = null;
-			
+			Connection conn = null;
 		
 		try {
 		
+		Class.forName("com.mysql.cj.jdbc.Driver");
+			    
+		// Establish a database connection
+		conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+			  
+
 		// Create a SQL SELECT query for past reservations
 		String pastSql = "SELECT * FROM vehicle_service WHERE username = ? AND CONCAT(date, ' ', time) < ? ORDER BY date, time";
 		
@@ -67,20 +81,27 @@ public ResultSet getPastServices(String username,Connection conn) {
 		
 		// Execute the SELECT queries
 		pastResultSet = pastPreparedStatement.executeQuery();
-
-		return pastResultSet;
+		
+		
 			} catch (SQLException e) {
 			e.printStackTrace();
-			return pastResultSet;
+			
 			}
+		return pastResultSet;
 
         
     }
     
-    public int deleteServices(int bookingId, Connection conn) {
+    public int deleteServices(int bookingId) throws ClassNotFoundException {
     	PreparedStatement preparedStatement = null;
 
     	try {
+    		Class.forName("com.mysql.cj.jdbc.Driver");
+		    
+    		// Establish a database connection
+    		Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+    			  
+
     	   
     	    // Create a SQL DELETE query
     	    String sql = "DELETE FROM vehicle_service WHERE booking_id = ?";
@@ -94,17 +115,18 @@ public ResultSet getPastServices(String username,Connection conn) {
     	    // Execute the DELETE query
     	    int rowsAffected = preparedStatement.executeUpdate();
     	    
+    	    
     	    // Check the number of rows affected to determine if the delete was successful
+    	    conn.close();
     	    return rowsAffected;
-    	}
-    	catch (SQLException e) {
+    	}catch (SQLException e) {
     	    e.printStackTrace();
     	    return -1;
     	} 
     }
     
     
-    public int insertService(String location, String mileageStr, String vehicle_no, String message, String userName, String dateStr, String timeStr,Connection conn) throws ParseException {
+    public int insertService(String location, String mileageStr, String vehicle_no, String message, String userName, String dateStr, String timeStr) throws ParseException, ClassNotFoundException {
     	  
     	 int mileage = Integer.parseInt(mileageStr);
          
@@ -131,6 +153,11 @@ public ResultSet getPastServices(String username,Connection conn) {
      
 
          try {
+        	 Class.forName("com.mysql.cj.jdbc.Driver");
+ 		    
+     		// Establish a database connection
+     		Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+     			
              
              // Create a SQL INSERT statement
               String sql = "INSERT INTO vehicle_service (date, time, location, mileage, vehicle_no, message, username) VALUES (?, ?, ?, ?, ?, ?, ?)";
@@ -148,6 +175,7 @@ public ResultSet getPastServices(String username,Connection conn) {
              preparedStatement.setString(7, userName);
              // Execute the INSERT statement
              int rowsInserted = preparedStatement.executeUpdate();
+             conn.close();
              
              // Check if the insertion was successful
             return rowsInserted;

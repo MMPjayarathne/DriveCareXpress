@@ -8,94 +8,100 @@
 		ServiceDAO service = new ServiceDAO();
 		// Database connection parameters
 		String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
-		String dbUser = "isec";
+		String dbUser = "isec"; 
 		String dbPassword = "EUHHaYAmtzbv";
 		ResultSet pastResultSet = null;
 		ResultSet futureResultSet = null;
 		
-	   
 	    
 		
 		try {
-		    // Load the MySQL JDBC driver
-		    Class.forName("com.mysql.cj.jdbc.Driver");
-		    
-		    // Establish a database connection
-		    Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-		    
-		    pastResultSet = service.getPastServices("masith@gmail.com",conn);
-			futureResultSet = service.getFutureServices("masith@gmail.com",conn);
-			
-			
-			
-			
-			
-		
-
-    
-    
-    if (request.getParameter("submit") != null) {
-        String location = request.getParameter("location");
-        String mileageStr = request.getParameter("mileage");
-        String vehicle_no = request.getParameter("vehicle");
-        String message = request.getParameter("message");
-        String userName = request.getParameter("usernameField");
-        String dateStr = request.getParameter("date");
-        String timeStr = request.getParameter("time");
-    	/*
-		System.out.println("Username: " + userName);
-	    System.out.println("location: " + location);
-	    System.out.println("Mileage: " + mileageStr);
-	    System.out.println("Message: " + message);
-	    System.out.println("Vehicle No: " + vehicle_no);*/
-
-        // Convert mileage to an integer
-        int rowsInserted =  service.insertService(location,  mileageStr, vehicle_no,  message,  userName,  dateStr,  timeStr, conn);
-        if (rowsInserted > 0) {
-         	out.println("Data inserted successfully.");
-             response.sendRedirect(request.getRequestURI());
-             
-         }else if(rowsInserted == -1){
-        	 out.println("Invalid time format. Please enter time in hh:mm format.");
-         }
-         else if(rowsInserted == -2){
-        	 out.println("Error parsing time");
-        	 	   
-         }
-        
-        else {
-        	 out.println("Failed to insert data.");
-         }
-         
-    }
-    
-    if (request.getParameter("delete") != null){
-    	
-    	String bookingId = request.getParameter("bookingID");
-    	
-    	int id = Integer.parseInt(bookingId);
-    	//System.out.println("Hello");
-    	//out.println(bookingId);
-    	int rowsAffected = service.deleteServices(id,conn);
-    	
-    	if (rowsAffected > 0) {
-    		 response.sendRedirect(request.getRequestURI());
+		   		    //when the service for submitted
+    	if (request.getParameter("submit") != null) {
+	        String location = request.getParameter("location");
+	        String mileageStr = request.getParameter("mileage");
+	        String vehicle_no = request.getParameter("vehicle");
+	        String message = request.getParameter("message");
+	        String userName = request.getParameter("usernameField");
+	        String dateStr = request.getParameter("date");
+	        String timeStr = request.getParameter("time");
+	    	/*
+			System.out.println("Username: " + userName);
+		    System.out.println("location: " + location);
+		    System.out.println("Mileage: " + mileageStr);
+		    System.out.println("Message: " + message);
+		    System.out.println("Vehicle No: " + vehicle_no);*/
+	
+	        // insert data to the database
+	        int rowsInserted =  service.insertService(location,  mileageStr, vehicle_no,  message,  userName,  dateStr,  timeStr);
+	        if (rowsInserted > 0) {
+	         	out.println("Data inserted successfully.");
+	             response.sendRedirect(request.getRequestURI());
+	             
+	         }else if(rowsInserted == -1){
+	        	 out.println("Invalid time format. Please enter time in hh:mm format.");
+	         }
+	         else if(rowsInserted == -2){
+	        	 out.println("Error parsing time");
+	        	 	   
+	         }
+	        
+	        else {
+	        	 out.println("Failed to insert data.");
+	         }
 	         
-	    }else if(rowsAffected == -1){
-	    	out.println("Error in the databse. Try again later");
-	    } else {
-	        out.println("No data found for the given booking ID");
+    	}
+    	//When the delete button is clicked
+	    if (request.getParameter("delete") != null){
+	    	
+	    	String bookingId = request.getParameter("bookingID");
+	    	
+	    	int id = Integer.parseInt(bookingId);
+	    	//System.out.println("Hello");
+	    	//out.println(bookingId);
+	    	//delete the row
+	    	int rowsAffected = service.deleteServices(id);
+	    	
+	    	if (rowsAffected > 0) {
+	    		//refresh the site  
+	    		 response.sendRedirect(request.getRequestURI());
+		         
+		    }else if(rowsAffected == -1){
+		    	out.println("Error in the databse. Try again later");
+		    } else {
+		        out.println("No data found for the given booking ID");
+		    }
+	    	
+	    	
+	    } 
+    	
+	    if (request.getParameter("pastRes") != null){
+	    	
+	    	 String userName = request.getParameter("usernameField2");
+	    	 System.out.println("Hello");
+	    	 System.out.println(userName);
+	    	 pastResultSet = service.getPastServices(userName);
+	    	
+	    	
 	    }
-    	
-    	
-    } 
+	    if (request.getParameter("futureRes") != null){
+	    	
+	    	 String userName = request.getParameter("usernameField3");
+	    	 
+	    	 //get the services from the database
+	    	  System.out.println("Hello");
+			System.out.println(userName);
+			futureResultSet = service.getFutureServices(userName);
+
+	    }
+   
     
 
 	
-		}catch (ClassNotFoundException e) {
-			e.printStackTrace();
+	}catch (ClassNotFoundException e) {
+		e.printStackTrace();
 			
-			}
+		}
 		
 %>
 
@@ -150,7 +156,22 @@
                 document.getElementById('submit').addEventListener('click', function () {
                     // Set the username as a hidden field value in the form
                     document.getElementById('usernameField').value = username;
+                 });
+                
+                document.getElementById('pastRes').addEventListener('click', function () {
+                    // Set the username as a hidden field value in the form
+                    document.getElementById('usernameField2').value = username;
+                   
                 });
+                document.getElementById('futureRes').addEventListener('click', function () {
+                    // Set the username as a hidden field value in the form
+                    document.getElementById('usernameField3').value = username;
+                   
+                });
+                 
+             // Store the username in a session attribute
+                session.setAttribute("username", username);
+             	console.log(session.getAttribute('username'));
                 
             })
             .fail(function (jqXHR, textStatus, errorThrown) {
@@ -163,6 +184,8 @@
         else{
         	window.location.href = "../index.jsp";	
         }
+        
+      
     </script>
 
 </head>
@@ -377,58 +400,79 @@
 </section>
 
 <section id = "history">
-<div class="past">
+<h1>Do you want see the Reservations.Click below</h1>
+<form class="mb-5" method="post" id="myForm"  action="?showPast=true" onclick="document.getElementById('past').style.display='block'" >
+
+<input type="hidden" id="usernameField2" name="usernameField2" value="" >
+	              
+<input type="submit" class="res" id="pastRes" name= "pastRes" value="Past Reservation" >
+</form>
+<br>
+
+<form class="mb-5" method="post" id="myForm" action="?showFuture=true" onclick="document.getElementById('future').style.display='block'"  >
+
+<input type="hidden" id="usernameField3" name="usernameField3" value="" >
+	              
+<input type="submit" class="res" id="futureRes" name="futureRes" value= "Future Reservation" >
+</form>
+<br><br>
+<% if (request.getParameter("showPast") != null && request.getParameter("showPast").equals("true")) { %>
+<div class="past" id="past">
 <h2 id="tableName">Past Reservations</h2>
 <br>
-<table>
-        <tr>
-            <th>Booking ID</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Location</th>
-            <th>Mileage</th>
-            <th>Vehicle Number</th>
-            <th>Message</th>
-        </tr>
-        <%
-        
-        Date currentDate = new Date();
-	          
-        if (pastResultSet != null) {
-        	
-            while (pastResultSet.next()) {
-            	
-            	Date date = pastResultSet.getDate("date");
-            	if(!date.before(currentDate)){
-            		 continue;
-            	}
-                int bookingId = pastResultSet.getInt("booking_id");
-                Time time = pastResultSet.getTime("time");
-                String location = pastResultSet.getString("location");
-                int mileage = pastResultSet.getInt("mileage");
-                String vehicleNo = pastResultSet.getString("vehicle_no");
-                String message = pastResultSet.getString("message");
-                
-            
-        %>
-        <tr>
-            <td><%= bookingId %></td>
-            <td><%= date %></td>
-            <td><%= time %></td>
-            <td><%= location %></td>
-            <td><%= mileage %></td>
-            <td><%= vehicleNo %></td>
-            <td><%= message %></td>
-        </tr>
-        <% 
-            }}
-            
-    %>
-    </table>
+ 	<table>
+	        <tr>
+	            <th>Booking ID</th>
+	            <th>Date</th>
+	            <th>Time</th>
+	            <th>Location</th>
+	            <th>Mileage</th>
+	            <th>Vehicle Number</th>
+	            <th>Message</th>
+	        </tr>
+	        <%
+	        
+	        Date currentDate = new Date();
+		          
+	        if (pastResultSet != null) {
+	        	
+	            while (pastResultSet.next()) {
+	            	
+	            	Date date = pastResultSet.getDate("date");
+	            	if(!date.before(currentDate)){
+	            		 continue;
+	            	}
+	                int bookingId = pastResultSet.getInt("booking_id");
+	                Time time = pastResultSet.getTime("time");
+	                String location = pastResultSet.getString("location");
+	                int mileage = pastResultSet.getInt("mileage");
+	                String vehicleNo = pastResultSet.getString("vehicle_no");
+	                String message = pastResultSet.getString("message");
+	                
+	            
+	        %>
+	        <tr>
+	            <td><%= bookingId %></td>
+	            <td><%= date %></td>
+	            <td><%= time %></td>
+	            <td><%= location %></td>
+	            <td><%= mileage %></td>
+	            <td><%= vehicleNo %></td>
+	            <td><%= message %></td>
+	        </tr>
+	        <% 
+	            }}
+	            
+	    %>
+	    </table>
+	    
 </div>
+<% } %>
 
 
-<div class="future">
+<% if (request.getParameter("showFuture") != null && request.getParameter("showFuture").equals("true")) { %>
+
+<div class="future" id="future">
 <h2 id="tableName">Future Reservations</h2>
 <br>
 <table>
@@ -444,6 +488,7 @@
         </tr>
         <%
 	           
+        Date currentDate = new Date();
         
         if (futureResultSet != null) {
             while (futureResultSet.next()) {
@@ -478,6 +523,7 @@
     %>
     </table>
 </div>
+<% } %>
 
 <div id="id01" class="modal">
   <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>

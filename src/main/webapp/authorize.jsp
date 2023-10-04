@@ -26,6 +26,9 @@
             var client_Id = 'EGjadG6IuA1nPWue_CiKusnbBu8a';
             var client_secret = 'VG4Ci2N7JaEGxXreq6tRs4lj48MEbBkYYc2qAF0iHhka';
             var redirect_uri = 'http://localhost:8080/DriveCareXpress/authorize.jsp';
+           // const introspectionEndpoint = 'https://api.asgardeo.io/t/learnmasith/oauth2/introspect';
+           // const clientCredentials = btoa(`${client_Id}:${client_secret}`);
+
 
             // Define the request body parameters
             var bodyParams = new URLSearchParams();
@@ -50,10 +53,14 @@
                   	// Handle the response data here
                     console.log(data.access_token);
                     var access_token  = data.access_token;
-                   	var id_token = data.id_token;
+                   	var id_token = data.access_token;
                    	localStorage.setItem('access_token', access_token);
                    	localStorage.setItem('id_token', id_token);
             	    window.location.href = "pages/home.jsp";
+            	    
+                   	
+            	    
+            	    
                 })	
                 .fail(function (error) {
                 	// Handle any errors here
