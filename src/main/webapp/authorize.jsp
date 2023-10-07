@@ -22,6 +22,8 @@
             var url = 'https://api.asgardeo.io/t/learnmasith/oauth2/token';
 
             var code = encodeURIComponent('<%= code %>');
+            var state = encodeURIComponent('<%= sessionState %>');
+            localStorage.setItem('state', state);
             var sessionState = encodeURIComponent('<%= sessionState %>');
             var client_Id = 'EGjadG6IuA1nPWue_CiKusnbBu8a';
             var client_secret = 'VG4Ci2N7JaEGxXreq6tRs4lj48MEbBkYYc2qAF0iHhka';

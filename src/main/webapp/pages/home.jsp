@@ -111,82 +111,18 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript"  src="../js/userInfo.js"></script>
+<script type="text/javascript"  src="../js/logout.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="../css/nav.css">
 <link rel="stylesheet" href="../css/home.css">
 <link rel="stylesheet" href="../css/profileCard.css">
 <link rel="stylesheet" href="../css/service.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 	
 <title>Home</title>
-
- <script type="text/javascript">
- 
- 
-        const introspectionEndpointUrl = 'https://api.asgardeo.io/t/learnmasith/oauth2/introspect';
-        const accessToken = localStorage.getItem('access_token');
-        const idToken = localStorage.getItem('id_token');
-        
-        if(accessToken && idToken){
-        	
-        var settings = {
-            "url": "https://api.asgardeo.io/t/learnmasith/oauth2/userinfo",
-            "method": "GET",
-            "timeout": 0,
-            "headers": {
-                "Authorization": "Bearer " + accessToken
-            },
-        };
-
-        $.ajax(settings)
-            .done(function (response) {
-                console.log(response);
-                var username =  response.username;
-                var given_name = response.given_name;
-                var phone = response.phone_number;
-                var email = response.email;
-                var parts = given_name.split(' ');
-                var firstName = parts[0];
-                document.getElementById('givenName').textContent = given_name;
-                document.getElementById('name').textContent = firstName;
-                document.getElementById('email').textContent = email;
-                document.getElementById('phone').textContent = phone;
-                
-                document.getElementById('submit').addEventListener('click', function () {
-                    // Set the username as a hidden field value in the form
-                    document.getElementById('usernameField').value = username;
-                 });
-                
-                document.getElementById('pastRes').addEventListener('click', function () {
-                    // Set the username as a hidden field value in the form
-                    document.getElementById('usernameField2').value = username;
-                   
-                });
-                document.getElementById('futureRes').addEventListener('click', function () {
-                    // Set the username as a hidden field value in the form
-                    document.getElementById('usernameField3').value = username;
-                   
-                });
-                 
-             // Store the username in a session attribute
-                session.setAttribute("username", username);
-             	console.log(session.getAttribute('username'));
-                
-            })
-            .fail(function (jqXHR, textStatus, errorThrown) {
-                // Handle any errors here
-                console.error('Error:', errorThrown);
-                alert("Error in the authorization. Login again!");
-                window.location.href = "../index.jsp";
-            });
-        }
-        else{
-        	window.location.href = "../index.jsp";	
-        }
-        
-      
-    </script>
 
 </head>
 <body>
@@ -287,7 +223,14 @@
   
   </div>
   <div class="actions">
-    <button type="button" onclick="window.location.href='../index.jsp'" >Log Out</button>
+  
+  	  <form id="logout-form" action="https://api.asgardeo.io/t/learnmasith/oidc/logout" method="POST">
+        <input type="hidden" id="client-id" name="client_id" value="">
+        <input type="hidden" id="post-logout-redirect-uri" name="post_logout_redirect_uri" value="">
+        <input type="hidden" id="state" name="state" value="">
+        <button type="submit">Logout</button>
+    </form>
+  
     
   </div></div>
  
