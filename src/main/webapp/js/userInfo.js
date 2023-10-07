@@ -2,13 +2,12 @@
  * 
  */
 
- 		const introspectionEndpointUrl = 'https://api.asgardeo.io/t/learnmasith/oauth2/introspect';
         const accessToken = localStorage.getItem('access_token');
        
         if(accessToken){
         	
         var settings = {
-            "url": "https://api.asgardeo.io/t/learnmasith/oauth2/userinfo",
+            "url": infoUrl,
             "method": "GET",
             "timeout": 0,
             "headers": {

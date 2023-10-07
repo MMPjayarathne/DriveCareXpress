@@ -3,6 +3,8 @@
 <%@ page import="java.sql.*, java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="com.services.jsp.*" %>
+<%@ page import="java.io.InputStream, java.io.IOException" %>
+<%@ page import="java.util.Properties" %>
 <% 
 
 		ServiceDAO service = new ServiceDAO();
@@ -103,6 +105,18 @@
 			
 		}
 		
+		
+// Initialize a Properties object
+Properties properties = new Properties();
+
+// Load the properties file
+try {
+	 InputStream inputStream = application.getResourceAsStream("/WEB-INF/classes/application.properties");
+	 properties.load(inputStream);
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+		
 %>
 
 
@@ -112,6 +126,15 @@
 <head>
 <meta charset="ISO-8859-1">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript">
+//set the globle parameters
+	const infoUrl = '<%= properties.getProperty("userinfoEndpoint") %>';
+	const client_Id = '<%= properties.getProperty("client_id") %>';
+	const client_secret = '<%= properties.getProperty("client_secret") %>';
+	const postLogoutRedirectUri = '<%= properties.getProperty("baseurl") %>' + '/DriveCareXpress/index.jsp';
+	const introspectionEndpointUrl ='<%= properties.getProperty("client_secret") %>';
+
+</script>
 <script type="text/javascript"  src="../js/userInfo.js"></script>
 <script type="text/javascript"  src="../js/logout.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
@@ -224,13 +247,14 @@
   </div>
   <div class="actions">
   
-  	  <form id="logout-form" action="https://api.asgardeo.io/t/learnmasith/oidc/logout" method="POST">
+  	  <form id="logout-form" action="<%= properties.getProperty("logoutEndpoint") %>" method="POST">
         <input type="hidden" id="client-id" name="client_id" value="">
         <input type="hidden" id="post-logout-redirect-uri" name="post_logout_redirect_uri" value="">
         <input type="hidden" id="state" name="state" value="">
         <button type="submit">Logout</button>
     </form>
   
+
     
   </div></div>
  

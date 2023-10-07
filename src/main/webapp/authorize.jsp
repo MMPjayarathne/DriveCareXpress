@@ -1,11 +1,23 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"   pageEncoding="ISO-8859-1"%>
-
+<%@ page import="java.io.FileInputStream, java.io.IOException, java.util.Properties" %>
+<%@ page import="java.io.InputStream, java.io.IOException" %>
 <%
 	
 		String code = request.getParameter("code");
 	
 	// Retrieve the 'session_state' parameter from the URL
 		String sessionState = request.getParameter("session_state");
+	
+		 // Initialize a Properties object
+	    Properties properties = new Properties();
+
+	    // Load the properties file
+	    try {
+	        InputStream inputStream = application.getResourceAsStream("/WEB-INF/classes/application.properties");
+	        properties.load(inputStream);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
 	
 
 %>
@@ -19,16 +31,19 @@
         // Function to make a POST request
         function makePostRequest() {
             // Define the URL
-            var url = 'https://api.asgardeo.io/t/learnmasith/oauth2/token';
+            var url = '<%= properties.getProperty("tokenEndpoint") %>';
 
             var code = encodeURIComponent('<%= code %>');
             var state = encodeURIComponent('<%= sessionState %>');
             localStorage.setItem('state', state);
             var sessionState = encodeURIComponent('<%= sessionState %>');
-            var client_Id = 'EGjadG6IuA1nPWue_CiKusnbBu8a';
-            var client_secret = 'VG4Ci2N7JaEGxXreq6tRs4lj48MEbBkYYc2qAF0iHhka';
-            var redirect_uri = 'http://localhost:8080/DriveCareXpress/authorize.jsp';
-           // const introspectionEndpoint = 'https://api.asgardeo.io/t/learnmasith/oauth2/introspect';
+            var client_Id = '<%= properties.getProperty("client_id") %>';
+            var client_secret = '<%= properties.getProperty("client_secret") %>';
+           
+            var redirect_uri =  '<%= properties.getProperty("baseurl") %>' + '/DriveCareXpress/authorize.jsp';
+          	//console.log(redirect_uri);
+            
+            // const introspectionEndpoint = 'https://api.asgardeo.io/t/learnmasith/oauth2/introspect';
            // const clientCredentials = btoa(`${client_Id}:${client_secret}`);
 
 
