@@ -132,7 +132,7 @@ try {
 	const client_Id = '<%= properties.getProperty("client_id") %>';
 	const client_secret = '<%= properties.getProperty("client_secret") %>';
 	const postLogoutRedirectUri = '<%= properties.getProperty("baseurl") %>' + '/DriveCareXpress/index.jsp';
-	const introspectionEndpointUrl ='<%= properties.getProperty("client_secret") %>';
+	const introspectionEndpointUrl ='<%= properties.getProperty("introspectionEndpoint") %>';
 
 </script>
 <script type="text/javascript"  src="../js/userInfo.js"></script>
@@ -149,7 +149,7 @@ try {
 
 </head>
 <body>
-
+<section id="home">
 <nav>
   <a class="active" href="#">
     <svg viewBox="0 0 100 100">
@@ -202,7 +202,7 @@ try {
 </nav>
 
 
-<section id="home">
+
 
 <div class="land">
 	<h1>Drive<span class="care">Care</span><span class="x">X</span>press</h1>
@@ -312,7 +312,7 @@ try {
 					 <br>
 	                <div class="col-md-6 form-group mb-3">
 	                  <label for="" class="col-form-label">Mileage *</label>
-	                  <input type="text" class="form-control" name="mileage" id="mileage"  placeholder="Enter the total mileage" required>
+	                  <input type="number" step="1" min="1" pattern="\d+" class="form-control" name="mileage" id="mileage"  placeholder="Enter the total mileage" required>
 	                </div>
 	                <br>
 	                <div class="col-md-6 form-group mb-3">
@@ -367,21 +367,25 @@ try {
 </section>
 
 <section id = "history">
-<h1>Do you want see the Reservations.Click below</h1>
-<form class="mb-5" method="post" id="myForm"  action="?showPast=true" onclick="document.getElementById('past').style.display='block'" >
+<div class="history-title">
+	<h1>Do you want see the Reservations.Click below</h1>
+</div>
 
-<input type="hidden" id="usernameField2" name="usernameField2" value="" >
-	              
-<input type="submit" class="res" id="pastRes" name= "pastRes" value="Past Reservation" >
-</form>
-<br>
+<div class="foroms">
+	<form class="mb-5" method="post" id="myForm"  action="?showPast=true" onclick="document.getElementById('past').style.display='block'" >
+		<input type="hidden" id="usernameField2" name="usernameField2" value="" >
+			              
+		<input type="submit" class="res" id="pastRes" name= "pastRes" value="Past Reservation" >
+	</form>
+	<br>
+	<form class="mb-5" method="post" id="myForm" action="?showFuture=true" onclick="document.getElementById('future').style.display='block'"  >
+	
+		<input type="hidden" id="usernameField3" name="usernameField3" value="" >
+			              
+		<input type="submit" class="res" id="futureRes" name="futureRes" value= "Future Reservation" >
+	</form>
+</div>
 
-<form class="mb-5" method="post" id="myForm" action="?showFuture=true" onclick="document.getElementById('future').style.display='block'"  >
-
-<input type="hidden" id="usernameField3" name="usernameField3" value="" >
-	              
-<input type="submit" class="res" id="futureRes" name="futureRes" value= "Future Reservation" >
-</form>
 <br><br>
 <% if (request.getParameter("showPast") != null && request.getParameter("showPast").equals("true")) { %>
 <div class="past" id="past">

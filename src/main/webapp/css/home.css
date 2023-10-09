@@ -2,7 +2,7 @@
 
 .land{
 	height:100vh;
-	padding-top: 20%;
+	padding-left: 10%;
 	
 }
 
@@ -17,27 +17,42 @@
 
 
 .care{
-	color:#CCCCFF;
+	color:#5b37b7;
 }
 .come{
-	color:#CCCCFF;
+	color:#5b37b7;
 }
 .x{
 	font-size: 100px;
 }
+#home{
+	content: "";
+	background-image: url('https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80'); /* Replace 'path-to-your-image.jpg' with the actual path to your image */
+  	background-size: cover; /* This property scales the background image to cover the entire div */
+  	background-repeat: no-repeat; /* Prevent the background image from repeating */
+  	background-position: center; 
+}
+
 
 #info{
 	height:100vh;
+	display: flex;
+    justify-content: center;
 }
 
 #service{
 	
-	width:50%;
+	display: flex;
+    justify-content: center;
 }
 
 #history{
-	width:50%;
+	
 	height:100vh;
+	display: flex;
+    align-items: center;
+	margin-top: 10%;
+	flex-direction: column;
 }
 
 
@@ -75,6 +90,7 @@ th {
   cursor: pointer;
   width: 100%;
   opacity: 0.9;
+  border-radius: 25px;
 }
 
 .delete:hover {
@@ -164,9 +180,26 @@ hr {
   }
 }
 
-.past{
+.history-title h1{
+	font-size: 2rem;
+    font-weight: 700;
+	
+}
+.foroms{
+	position:inherit;
+	padding-top: 30px;
+}
+
+.past h2{
+	font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+
 	}
-.future{
+.future h2{
+	font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
 	
 }
 

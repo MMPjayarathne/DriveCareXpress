@@ -5,13 +5,22 @@ a {
   transition: .3s all ease; }
   a, a:hover {
     text-decoration: none !important; }
-
+    
+    
+ .col-md-12{
+  width:100%;
+ }   
+    
 .text-black {
   color: #000; }
 
 .content {
-  padding: 7rem 0;
-  position: relative;  }
+  position: relative; 
+  width:50%;
+  box-shadow: 0px 14px 80px rgba(34, 35, 58, 0.5);
+   max-width: 800px;
+   margin-top: 10%;
+  }
 
 .heading {
   font-size: 2.5rem;
@@ -59,7 +68,7 @@ a {
   text-transform: uppercase;
   border-radius: 30px !important; }
   .btn.btn-primary {
-  	width: 200px;
+  	
     border-radius: 30px;
     background: #ef4339;
     color: #fff;
@@ -75,7 +84,7 @@ a {
 .contact-wrap {
   -webkit-box-shadow: 0 0px 20px 0 rgba(0, 0, 0, 0.05);
   box-shadow: 0 0px 20px 0 rgba(0, 0, 0, 0.05);
-  border: 1px solid #efefef; }
+  }
   .contact-wrap .col-form-label {
     font-size: 14px;
     color: #b3b3b3;
@@ -99,7 +108,8 @@ a {
         color: #fff;
         margin-top: 5px; }
   .contact-wrap .form {
-    background: #fff; }
+    background: #fff;
+    border-radius: 25px; }
     .contact-wrap .form h3 {
       color: #000;
       font-size: 2rem;

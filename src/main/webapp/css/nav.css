@@ -12,7 +12,6 @@ body {
   color: #010101;
   /* center in the viewport */
   min-height: 100vh;
-  display: grid;
   place-items: center;
   font-family: "Open Sans", sans-serif;
   /* transition for the change in bg color */
@@ -27,7 +26,10 @@ nav {
   padding: 2rem 3.15rem;
   border-radius: 0 0 30px 30px;
   box-shadow: 0 1px 15px rgba(0, 0, 0, 0.1);
-  
+  margin-right: 20%;
+  margin-left: 20%;
+  justify-content: center;
+  align-items: center;
 }
 
 /* remove default style and slightly separate the anchor links from one another */
