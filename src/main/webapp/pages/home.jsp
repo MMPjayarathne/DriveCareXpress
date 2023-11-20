@@ -9,7 +9,7 @@
 
 		ServiceDAO service = new ServiceDAO();
 		// Database connection parameters
-		String dbUrl = "jdbc:mysql://51.132.137.223:3306/isec_assessment2";
+		String dbUrl = "jdbc:mysql://172.187.178.153:3306/isec_assessment2";
 		String dbUser = "isec"; 
 		String dbPassword = "EUHHaYAmtzbv";
 		ResultSet pastResultSet = null;
@@ -204,7 +204,7 @@ try {
 
 
 
-<div class="land">
+<div class="land"> 
 	<h1>Drive<span class="care">Care</span><span class="x">X</span>press</h1>
 	
 	<h2 class="welcome">Wel<span class="come">come!</span></h2>
