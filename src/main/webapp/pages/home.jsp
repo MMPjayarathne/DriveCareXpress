@@ -37,8 +37,9 @@
 	        // insert data to the database
 	        int rowsInserted =  service.insertService(location,  mileageStr, vehicle_no,  message,  userName,  dateStr,  timeStr);
 	        if (rowsInserted > 0) {
-	         	out.println("Data inserted successfully.");
-	             response.sendRedirect(request.getRequestURI());
+	        	String successMessage = "Data inserted successfully.";
+	            request.setAttribute("successMessage", successMessage);
+	            response.sendRedirect(request.getRequestURI() + "#service");
 	             
 	         }else if(rowsInserted == -1){
 	        	 out.println("Invalid time format. Please enter time in hh:mm format.");
@@ -80,8 +81,8 @@
 	    if (request.getParameter("pastRes") != null){
 	    	
 	    	 String userName = request.getParameter("usernameField2");
-	    	 System.out.println("Hello");
-	    	 System.out.println(userName);
+	    	 //System.out.println("Hello");
+	    	 //System.out.println(userName);
 	    	 pastResultSet = service.getPastServices(userName);
 	    	
 	    	
@@ -91,8 +92,8 @@
 	    	 String userName = request.getParameter("usernameField3");
 	    	 
 	    	 //get the services from the database
-	    	  System.out.println("Hello");
-			System.out.println(userName);
+	    	 // System.out.println("Hello");
+			//System.out.println(userName);
 			futureResultSet = service.getFutureServices(userName);
 
 	    }
@@ -246,7 +247,7 @@ try {
   
   </div>
   <div class="actions">
-  
+  		
   	  <form id="logout-form" action="<%= properties.getProperty("logoutEndpoint") %>" method="POST">
         <input type="hidden" id="client-id" name="client_id" value="">
         <input type="hidden" id="post-logout-redirect-uri" name="post_logout_redirect_uri" value="">
@@ -274,6 +275,22 @@ try {
 	      <div class="row align-items-stretch no-gutters contact-wrap">
 	        <div class="col-md-12">
 	          <div class="form h-100">
+	          	<%
+				String message = (String) request.getAttribute("successMessage");
+	          	System.out.println(message);
+	          	if(message!=null){
+				%>
+				    <div class="success-message">
+				        <%= message %>
+				    </div>
+				    <script>
+					    document.addEventListener('DOMContentLoaded', function() {
+					        var successMessage = '<%= message %>';
+					        alert(successMessage);
+					    });
+				    </script>
+				   <% } %>
+
 	            <h3>Service</h3>
 	            <form class="mb-5" method="post" id="contactForm" name="contactForm">
 	              <div class="row">
@@ -317,7 +334,7 @@ try {
 	                <br>
 	                <div class="col-md-6 form-group mb-3">
 	                   <label for="birthday" class="col-form-label">Date *</label>
-  						<input type="date" id="date" name="date" required>
+  						<input type="date" id="date" name="date" min="<%= java.time.LocalDate.now() %>" required>
 	                </div>
 	                <br>
 	                <div class="col-md-6 form-group mb-3">
@@ -372,13 +389,13 @@ try {
 </div>
 
 <div class="foroms">
-	<form class="mb-5" method="post" id="myForm"  action="?showPast=true" onclick="document.getElementById('past').style.display='block'" >
+	<form class="mb-5" method="post" id="myForm"  action="?showPast=true#history" onclick="document.getElementById('past').style.display='block'" >
 		<input type="hidden" id="usernameField2" name="usernameField2" value="" >
 			              
 		<input type="submit" class="res" id="pastRes" name= "pastRes" value="Past Reservation" >
 	</form>
 	<br>
-	<form class="mb-5" method="post" id="myForm" action="?showFuture=true" onclick="document.getElementById('future').style.display='block'"  >
+	<form class="mb-5" method="post" id="myForm" action="?showFuture=true#history" onclick="document.getElementById('future').style.display='block'"  >
 	
 		<input type="hidden" id="usernameField3" name="usernameField3" value="" >
 			              
@@ -418,7 +435,7 @@ try {
 	                String location = pastResultSet.getString("location");
 	                int mileage = pastResultSet.getInt("mileage");
 	                String vehicleNo = pastResultSet.getString("vehicle_no");
-	                String message = pastResultSet.getString("message");
+	                String message1 = pastResultSet.getString("message");
 	                
 	            
 	        %>
@@ -429,7 +446,7 @@ try {
 	            <td><%= location %></td>
 	            <td><%= mileage %></td>
 	            <td><%= vehicleNo %></td>
-	            <td><%= message %></td>
+	            <td><%= message1 %></td>
 	        </tr>
 	        <% 
 	            }}
@@ -474,7 +491,7 @@ try {
                 String location = futureResultSet.getString("location");
                 int mileage = futureResultSet.getInt("mileage");
                 String vehicleNo = futureResultSet.getString("vehicle_no");
-                String message = futureResultSet.getString("message");
+                String message0 = futureResultSet.getString("message");
                 
             
         %>
@@ -485,7 +502,7 @@ try {
             <td><%= location %></td>
             <td><%= mileage %></td>
             <td><%= vehicleNo %></td>
-            <td><%= message %></td>
+            <td><%= message0 %></td>
             <td><button onclick="document.getElementById('id01').style.display='block';  document.getElementById('bookingID').value = <%= bookingId %>;" class="delete">Delete</button></td>
         </tr>
         <% 

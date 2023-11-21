@@ -75,3 +75,19 @@ window.onclick = function(event) {
     modal.style.display = "none";
   }
 }
+
+
+// Function to scroll to a specific section based on the URL hash
+function scrollToSection() {
+    if (window.location.hash === '#service') {
+        var servicesSection = document.getElementById('service');
+        if (servicesSection) {
+            servicesSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+}
+
+// Call the scroll function when the page loads
+window.onload = function() {
+    scrollToSection();
+};

@@ -1,5 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    <%@ page import="java.io.FileInputStream, java.io.IOException, java.util.Properties" %>
+<%@ page import="java.io.InputStream, java.io.IOException" %>
+
+<%
+		 // Initialize a Properties object
+	    Properties properties = new Properties();
+
+	    // Load the properties file
+	    try {
+	        InputStream inputStream = application.getResourceAsStream("/WEB-INF/classes/application.properties");
+	        properties.load(inputStream);
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	
+
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +29,21 @@
 <link rel="stylesheet" href="css/style.css">
 
 <title>DriveCareXpress</title>
+
+<script type="text/javascript">
+function authorize() {
+    var authorizeEndpoint = '<%= properties.getProperty("authorizeEndpoint") %>';
+    var clientId = '<%= properties.getProperty("client_id") %>';
+    var redirectUri = encodeURIComponent('<%= properties.getProperty("baseurl") %>/DriveCareXpress/authorize.jsp');
+
+    var redirectUrl = authorizeEndpoint + '?response_type=code' +
+        '&client_id=' + clientId +
+        '&scope=openid email phone profile' +
+        '&redirect_uri=' + redirectUri;
+
+    window.location.href = redirectUrl;
+}
+</script>
 
 </head>
 <body class="img js-fullheight" style="background-image: url(images/background2.jpg);">
@@ -28,7 +60,7 @@
 		      	<h3 class="mb-4 text-center">Sign In using Asgardeo</h3>
 		      	
 	            <div class="form-group">
-	            	<button type="button" onclick="window.location.href='https://api.asgardeo.io/t/learnmasith/oauth2/authorize?response_type=code&client_id=EGjadG6IuA1nPWue_CiKusnbBu8a&scope=openid%20email%20phone%20profile&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2FDriveCareXpress%2Fauthorize.jsp'" class="form-control btn btn-primary submit px-3">Sign In</button>
+	            	<button type="button" onclick="authorize()" class="form-control btn btn-primary submit px-3">Sign In</button>
 	            	
 	            </div>
 	  
