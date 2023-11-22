@@ -3,19 +3,19 @@
 const navigationOptions = [
   {
     name: 'home',
-    color: '#5B37B7'
+    color: '#CCCCFF'
   },
   {
     name: 'services',
-    color: '#C9379D'
+    color: '#9FE2BF'
   },
   {
     name: 'search',
-    color: '#E6A919'
+    color: '#808B96'
   },
   {
     name: 'profile',
-    color: '#1892A6'
+    color: '#D6DBDF  '
   }
 ];
 

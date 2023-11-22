@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="89167f17-11eb-43b6-9bb7-fca1e0ac94e7" name="Changes" comment="feat: update styles" />
+    <list default="true" id="89167f17-11eb-43b6-9bb7-fca1e0ac94e7" name="Changes" comment="feat: update components">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -150,7 +152,21 @@
       <option name="project" value="LOCAL" />
       <updated>1696873787101</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="feat: update components">
+      <created>1700488505680</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1700488505680</updated>
+    </task>
+    <task id="LOCAL-00018" summary="feat: update components">
+      <created>1700558367974</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1700558367974</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -180,6 +196,7 @@
     <MESSAGE value="feat: implement logout functionality" />
     <MESSAGE value="feat: created application.properties" />
     <MESSAGE value="feat: update styles" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: update styles" />
+    <MESSAGE value="feat: update components" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: update components" />
   </component>
 </project>

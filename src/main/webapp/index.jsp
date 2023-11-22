@@ -35,10 +35,10 @@ function authorize() {
     var authorizeEndpoint = '<%= properties.getProperty("authorizeEndpoint") %>';
     var clientId = '<%= properties.getProperty("client_id") %>';
     var redirectUri = encodeURIComponent('<%= properties.getProperty("baseurl") %>/DriveCareXpress/authorize.jsp');
-
+	var scope = '<%= properties.getProperty("scope") %>';
     var redirectUrl = authorizeEndpoint + '?response_type=code' +
         '&client_id=' + clientId +
-        '&scope=openid email phone profile' +
+        '&scope='+scope+
         '&redirect_uri=' + redirectUri;
 
     window.location.href = redirectUrl;

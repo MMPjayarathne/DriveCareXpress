@@ -24,10 +24,14 @@
                 var email = response.email;
                 var parts = given_name.split(' ');
                 var firstName = parts[0];
+                var address = response.address;
+                var country = address.country;
+                console.log(country);
                 document.getElementById('givenName').textContent = given_name;
                 document.getElementById('name').textContent = firstName;
                 document.getElementById('email').textContent = email;
                 document.getElementById('phone').textContent = phone;
+                document.getElementById('country').textContent = country;
                 
                 document.getElementById('submit').addEventListener('click', function () {
                     // Set the username as a hidden field value in the form

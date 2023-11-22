@@ -240,6 +240,7 @@ try {
   <ul>
   <li>Email : <span id = 'email'></span></li>
   <li>Contact: <span id = 'phone'></span></li>
+  <li>Country: <span id = 'country'></span></li>
   
   
   </ul>
@@ -408,7 +409,7 @@ try {
 <div class="past" id="past">
 <h2 id="tableName">Past Reservations</h2>
 <br>
- 	<table>
+ 	<table class="table">
 	        <tr>
 	            <th>Booking ID</th>
 	            <th>Date</th>
@@ -463,7 +464,7 @@ try {
 <div class="future" id="future">
 <h2 id="tableName">Future Reservations</h2>
 <br>
-<table>
+<table class="table">
         <tr>
             <th>Booking ID</th>
             <th>Date</th>
