@@ -8,14 +8,16 @@ import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.util.List;
+import java.util.ArrayList;
 
 public class ServiceDAO {
 	
 	String dbUrl = "jdbc:mysql://172.187.178.153:3306/isec_assessment2";
 	String dbUser = "isec";
 	String dbPassword = "EUHHaYAmtzbv";
-   
+;
+	
     public ResultSet getFutureServices(String username) throws ClassNotFoundException, SQLException{
     	
 		ResultSet futureResultSet = null;
@@ -166,7 +168,7 @@ public ResultSet getPastServices(String username) throws ClassNotFoundException,
              PreparedStatement preparedStatement = conn.prepareStatement(sql);
              
              // Set the parameter values
-            	preparedStatement.setDate(1, new java.sql.Date(date.getTime())); // Current date
+            preparedStatement.setDate(1, new java.sql.Date(date.getTime())); // Current date
              preparedStatement.setTime(2, time); // Current time
              preparedStatement.setString(3, location);
              preparedStatement.setInt(4, mileage);
@@ -188,5 +190,31 @@ public ResultSet getPastServices(String username) throws ClassNotFoundException,
          }
     }
 
+    public List<String> JavaToJavaScript(ResultSet resultSet) throws SQLException{
+    	
+    	 // Create a List to hold JavaScript objects
+        List<String> javascriptObjects = new ArrayList<>();
+
+        while (resultSet.next()) {
+            // Retrieve data from the ResultSet and construct a JavaScript object
+            int bookingId = resultSet.getInt("booking_id");
+            String date = resultSet.getString("date");
+            String time = resultSet.getString("time"); // Adjust type based on your data
+            String location = resultSet.getString("location");
+            int mileage = resultSet.getInt("mileage");
+            String vehicleNo = resultSet.getString("vehicle_no");
+            String message1 = resultSet.getString("message");
+
+            // Construct a JavaScript object using JSON-like notation
+            String javascriptObject = String.format("{\"bookingId\": %d, \"date\": \"%s\", \"time\": \"%s\", \"location\": \"%s\", \"mileage\": %d, \"vehicleNo\": \"%s\", \"message\": \"%s\"}",
+                    bookingId, date, time, location, mileage, vehicleNo, message1);
+
+            javascriptObjects.add(javascriptObject);
+
+        }
+        return javascriptObjects;
+        
+    	
+    }
     
 }

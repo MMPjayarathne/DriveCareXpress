@@ -3,7 +3,7 @@
  */
 
         const accessToken = localStorage.getItem('access_token');
-       
+       	 var username = null;
         if(accessToken){
         	
         var settings = {
@@ -18,7 +18,7 @@
         $.ajax(settings)
             .done(function (response) {
                 console.log(response);
-                var username =  response.username;
+                username =  response.username;
                 var given_name = response.given_name;
                 var phone = response.phone_number;
                 var email = response.email;
@@ -38,16 +38,10 @@
                     document.getElementById('usernameField').value = username;
                  });
                 
-                document.getElementById('pastRes').addEventListener('click', function () {
-                    // Set the username as a hidden field value in the form
-                    document.getElementById('usernameField2').value = username;
-                   
-                });
-                document.getElementById('futureRes').addEventListener('click', function () {
-                    // Set the username as a hidden field value in the form
-                    document.getElementById('usernameField3').value = username;
-                   
-                });
+              
+                
+                //calling
+                getReservation() 
                  
              
             })
@@ -63,5 +57,13 @@
         }
         
         
+        
+ // Function to load getReservation.js
+function getReservation() {
+    var script = document.createElement('script');
+    script.src = "../js/getReservation.js";
+    document.head.appendChild(script);
+}       
+       
       
         

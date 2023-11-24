@@ -5,20 +5,17 @@
 <%@ page import="com.services.jsp.*" %>
 <%@ page import="java.io.InputStream, java.io.IOException" %>
 <%@ page import="java.util.Properties" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <% 
 
 		ServiceDAO service = new ServiceDAO();
-		// Database connection parameters
-		String dbUrl = "jdbc:mysql://172.187.178.153:3306/isec_assessment2";
-		String dbUser = "isec"; 
-		String dbPassword = "EUHHaYAmtzbv";
-		ResultSet pastResultSet = null;
-		ResultSet futureResultSet = null;
+		//To store the past and future reservation separately
 		
 	    
 		
 		try {
-		   		    //when the service for submitted
+		  //when the reservation form submitted
     	if (request.getParameter("submit") != null) {
 	        String location = request.getParameter("location");
 	        String mileageStr = request.getParameter("mileage");
@@ -78,25 +75,9 @@
 	    	
 	    } 
     	
-	    if (request.getParameter("pastRes") != null){
-	    	
-	    	 String userName = request.getParameter("usernameField2");
-	    	 //System.out.println("Hello");
-	    	 //System.out.println(userName);
-	    	 pastResultSet = service.getPastServices(userName);
-	    	
-	    	
-	    }
-	    if (request.getParameter("futureRes") != null){
-	    	
-	    	 String userName = request.getParameter("usernameField3");
-	    	 
-	    	 //get the services from the database
-	    	 // System.out.println("Hello");
-			//System.out.println(userName);
-			futureResultSet = service.getFutureServices(userName);
-
-	    }
+    
+    	
+    
    
     
 
@@ -128,7 +109,7 @@ try {
 <meta charset="ISO-8859-1">
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript">
-//set the globle parameters
+	//set the globle parameters for authentication
 	const infoUrl = '<%= properties.getProperty("userinfoEndpoint") %>';
 	const client_Id = '<%= properties.getProperty("client_id") %>';
 	const client_secret = '<%= properties.getProperty("client_secret") %>';
@@ -138,6 +119,7 @@ try {
 </script>
 <script type="text/javascript"  src="../js/userInfo.js"></script>
 <script type="text/javascript"  src="../js/logout.js"></script>
+
 <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="../css/nav.css">
@@ -151,6 +133,8 @@ try {
 </head>
 <body>
 <section id="home">
+
+<!-- ----------------------Navigation Panel-------------------- -->
 <nav>
   <a class="active" href="#">
     <svg viewBox="0 0 100 100">
@@ -204,7 +188,7 @@ try {
 
 
 
-
+<!-- ----------------------Welcome message-------------------- -->
 <div class="land"> 
 	<h1>Drive<span class="care">Care</span><span class="x">X</span>press</h1>
 	
@@ -215,6 +199,7 @@ try {
 
 </section>
 
+<!-- ----------------------Profile Info-------------------- -->
 <section id="info">
 
 <div class="card">
@@ -268,7 +253,7 @@ try {
 
 
 </section>
-
+<!-- ----------------------Reservation form-------------------- -->
 <section id="service">
 
 <div class="content">
@@ -278,7 +263,7 @@ try {
 	          <div class="form h-100">
 	          	<%
 				String message = (String) request.getAttribute("successMessage");
-	          	System.out.println(message);
+	          	//System.out.println(message);
 	          	if(message!=null){
 				%>
 				    <div class="success-message">
@@ -384,87 +369,30 @@ try {
 
 </section>
 
+<!-- ----------------------View reservation section-------------------- -->
 <section id = "history">
-<div class="history-title">
-	<h1>Do you want see the Reservations.Click below</h1>
-</div>
 
-<div class="foroms">
-	<form class="mb-5" method="post" id="myForm"  action="?showPast=true#history" onclick="document.getElementById('past').style.display='block'" >
-		<input type="hidden" id="usernameField2" name="usernameField2" value="" >
-			              
-		<input type="submit" class="res" id="pastRes" name= "pastRes" value="Past Reservation" >
-	</form>
-	<br>
-	<form class="mb-5" method="post" id="myForm" action="?showFuture=true#history" onclick="document.getElementById('future').style.display='block'"  >
-	
-		<input type="hidden" id="usernameField3" name="usernameField3" value="" >
-			              
-		<input type="submit" class="res" id="futureRes" name="futureRes" value= "Future Reservation" >
-	</form>
-</div>
 
-<br><br>
-<% if (request.getParameter("showPast") != null && request.getParameter("showPast").equals("true")) { %>
+
 <div class="past" id="past">
-<h2 id="tableName">Past Reservations</h2>
+<h2 id="tableName" id="pastTable">Past Reservations</h2>
 <br>
- 	<table class="table">
-	        <tr>
-	            <th>Booking ID</th>
-	            <th>Date</th>
-	            <th>Time</th>
-	            <th>Location</th>
-	            <th>Mileage</th>
-	            <th>Vehicle Number</th>
-	            <th>Message</th>
-	        </tr>
-	        <%
-	        
-	        Date currentDate = new Date();
-		          
-	        if (pastResultSet != null) {
-	        	
-	            while (pastResultSet.next()) {
-	            	
-	            	Date date = pastResultSet.getDate("date");
-	            	if(!date.before(currentDate)){
-	            		 continue;
-	            	}
-	                int bookingId = pastResultSet.getInt("booking_id");
-	                Time time = pastResultSet.getTime("time");
-	                String location = pastResultSet.getString("location");
-	                int mileage = pastResultSet.getInt("mileage");
-	                String vehicleNo = pastResultSet.getString("vehicle_no");
-	                String message1 = pastResultSet.getString("message");
-	                
-	            
-	        %>
-	        <tr>
-	            <td><%= bookingId %></td>
-	            <td><%= date %></td>
-	            <td><%= time %></td>
-	            <td><%= location %></td>
-	            <td><%= mileage %></td>
-	            <td><%= vehicleNo %></td>
-	            <td><%= message1 %></td>
-	        </tr>
-	        <% 
-	            }}
-	            
-	    %>
-	    </table>
-	    
-</div>
-<% } %>
-
-
-<% if (request.getParameter("showFuture") != null && request.getParameter("showFuture").equals("true")) { %>
+<table class="table" id="pastTable">
+    <tr>
+        <th>Booking ID</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Location</th>
+        <th>Mileage</th>
+        <th>Vehicle Number</th>
+        <th>Message</th>
+    </tr>
+</table>
 
 <div class="future" id="future">
-<h2 id="tableName">Future Reservations</h2>
-<br>
-<table class="table">
+    <h2 id="tableName">Future Reservations</h2>
+    <br>
+    <table class="table" id="futureTable">
         <tr>
             <th>Booking ID</th>
             <th>Date</th>
@@ -475,45 +403,13 @@ try {
             <th>Message</th>
             <th>Action</th>
         </tr>
-        <%
-	           
-        Date currentDate = new Date();
-        
-        if (futureResultSet != null) {
-            while (futureResultSet.next()) {
-            	
-            	Date date = futureResultSet.getDate("date");
-            	
-            	if(date.before(currentDate)){
-            		 continue;
-            	}
-                int bookingId = futureResultSet.getInt("booking_id");
-                Time time = futureResultSet.getTime("time");
-                String location = futureResultSet.getString("location");
-                int mileage = futureResultSet.getInt("mileage");
-                String vehicleNo = futureResultSet.getString("vehicle_no");
-                String message0 = futureResultSet.getString("message");
-                
-            
-        %>
-        <tr>
-            <td><%= bookingId %></td>
-            <td><%= date %></td>
-            <td><%= time %></td>
-            <td><%= location %></td>
-            <td><%= mileage %></td>
-            <td><%= vehicleNo %></td>
-            <td><%= message0 %></td>
-            <td><button onclick="document.getElementById('id01').style.display='block';  document.getElementById('bookingID').value = <%= bookingId %>;" class="delete">Delete</button></td>
-        </tr>
-        <% 
-            }}
-            
-    %>
     </table>
 </div>
-<% } %>
 
+</div>
+
+
+<!-- ----------------------Pop-up window to get confirmation for deleting-------------------- -->
 <div id="id01" class="modal">
   <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
   <form class="modal-content" method="post" >
@@ -535,6 +431,7 @@ try {
 
 
 <script type="text/javascript"  src="../js/home.js"></script>
+
 </body>
 
 

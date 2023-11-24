@@ -270,6 +270,7 @@ hr {
 }
 
 .table{
+	border-collapse: collapse;
 	
 	margin-bottom:5%;
 }
