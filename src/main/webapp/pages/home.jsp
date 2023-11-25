@@ -55,12 +55,13 @@
 	    if (request.getParameter("delete") != null){
 	    	
 	    	String bookingId = request.getParameter("bookingID");
+	    	String username = request.getParameter("usernameForDelete");
 	    	
 	    	int id = Integer.parseInt(bookingId);
 	    	//System.out.println("Hello");
 	    	//out.println(bookingId);
 	    	//delete the row
-	    	int rowsAffected = service.deleteServices(id);
+	    	int rowsAffected = service.deleteServices(id,username);
 	    	
 	    	if (rowsAffected > 0) {
 	    		//refresh the site  
@@ -319,13 +320,18 @@ try {
 	                </div>
 	                <br>
 	                <div class="col-md-6 form-group mb-3">
-	                   <label for="birthday" class="col-form-label">Date *</label>
+	                   <label for="day" class="col-form-label">Date *</label>
   						<input type="date" id="date" name="date" min="<%= java.time.LocalDate.now() %>" required>
 	                </div>
 	                <br>
 	                <div class="col-md-6 form-group mb-3">
 	                   <label for="time" class="col-form-label">Select a time * </label>
-  					<input type="time" id="time" name="time" required>
+  					 <select class="custom-select" id="time" name="time" required>
+  					 		<option selected>Choose...</option>
+						    <option value="10:00 AM">10:00 AM</option>
+				            <option value="11:00 AM">11:00 AM</option>
+				            <option value="12:00 PM">12:00 PM</option>
+  					 </select>
 	                </div>
 	                
 	                 <input type="hidden" id="usernameField" name="usernameField" value="" >
@@ -412,14 +418,15 @@ try {
 <!-- ----------------------Pop-up window to get confirmation for deleting-------------------- -->
 <div id="id01" class="modal">
   <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">×</span>
-  <form class="modal-content" method="post" >
+  <form class="modal-content" id="deleteForm" method="post" >
     <div class="container2">
       <h1>Delete Reservation</h1>
       <p>Are you sure you want to delete your reservation?</p>
     	<input type="hidden" id="bookingID" name="bookingID" value="" >
+    	<input type="hidden" id="usernameForDelete" name="usernameForDelete" value="" >
       <div class="clearfix">
         <button type="button" onclick="document.getElementById('id01').style.display='none'" class="cancelbtn">Cancel</button>
-        <input type="submit" value="Delete" name="delete" onclick="document.getElementById('id01').style.display='none'" class="deletebtn">
+        <input type="submit" value="Delete" name="delete" id="delete" onclick="document.getElementById('id01').style.display='none'" class="deletebtn">
       </div>
     </div>
   </form>

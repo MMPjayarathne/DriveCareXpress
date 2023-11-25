@@ -10,6 +10,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class ServiceDAO {
 	
@@ -94,7 +96,7 @@ public ResultSet getPastServices(String username) throws ClassNotFoundException,
         
     }
     
-    public int deleteServices(int bookingId) throws ClassNotFoundException {
+    public int deleteServices(int bookingId, String username) throws ClassNotFoundException {
     	PreparedStatement preparedStatement = null;
 
     	try {
@@ -106,13 +108,14 @@ public ResultSet getPastServices(String username) throws ClassNotFoundException,
 
     	   
     	    // Create a SQL DELETE query
-    	    String sql = "DELETE FROM vehicle_service WHERE booking_id = ?";
+    	    String sql = "DELETE FROM vehicle_service WHERE booking_id = ? AND username = ?";
 
     	    // Create a PreparedStatement
     	    preparedStatement = conn.prepareStatement(sql);
 
     	    // Set the parameter value (booking id)
     	    preparedStatement.setInt(1, bookingId);
+    	    preparedStatement.setString(2, username);
 
     	    // Execute the DELETE query
     	    int rowsAffected = preparedStatement.executeUpdate();
@@ -129,65 +132,54 @@ public ResultSet getPastServices(String username) throws ClassNotFoundException,
     
     
     public int insertService(String location, String mileageStr, String vehicle_no, String message, String userName, String dateStr, String timeStr) throws ParseException, ClassNotFoundException {
-    	  
-    	 int mileage = Integer.parseInt(mileageStr);
-         
- 	    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
- 	    Date date = dateFormat.parse(dateStr);
- 	    
- 	    Time time = null;
 
- 	    try {
- 	        // Check if the timeStr matches the expected format "hh:mm"
- 	        if (timeStr.matches("^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$")) {
- 	            // If it matches, add ":00" to the end of the string to match SQL TIME format
- 	            timeStr += ":00";
- 	            // Create a Time object
- 	            time = Time.valueOf(timeStr);
- 	        } else {
- 	            // Handle invalid time format
- 	        	return -1;
- 	            }
- 	    } catch (IllegalArgumentException e) {
- 	    	return -2;
- 	     }
+ 	   try {
+ 	        // Convert mileage string to integer
+ 	        int mileage = Integer.parseInt(mileageStr);
 
-     
+ 	        // Parse date and time strings
+ 	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+ 	        Date date = dateFormat.parse(dateStr);
+ 	     
+ 	        
+ 	        DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("h:mm a");
 
-         try {
-        	 Class.forName("com.mysql.cj.jdbc.Driver");
- 		    
-     		// Establish a database connection
-     		Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
-     			
-             
-             // Create a SQL INSERT statement
-              String sql = "INSERT INTO vehicle_service (date, time, location, mileage, vehicle_no, message, username) VALUES (?, ?, ?, ?, ?, ?, ?)";
-             
-             // Create a PreparedStatement
-             PreparedStatement preparedStatement = conn.prepareStatement(sql);
-             
-             // Set the parameter values
-            preparedStatement.setDate(1, new java.sql.Date(date.getTime())); // Current date
-             preparedStatement.setTime(2, time); // Current time
-             preparedStatement.setString(3, location);
-             preparedStatement.setInt(4, mileage);
-             preparedStatement.setString(5, vehicle_no);
-             preparedStatement.setString(6, message);
-             preparedStatement.setString(7, userName);
-             // Execute the INSERT statement
-             int rowsInserted = preparedStatement.executeUpdate();
-             conn.close();
-             
-             // Check if the insertion was successful
-            return rowsInserted;
-             // Close the database connection
-           
-         } catch (SQLException e) {
-             e.printStackTrace();
-             
-             return -1;
-         }
+ 	        // Parse the input time string to LocalTime
+ 	        LocalTime localTime = LocalTime.parse(timeStr, inputFormatter);
+
+ 	        // Convert LocalTime to SQL Time
+ 	        Time time = Time.valueOf(localTime);
+
+
+ 	        // Establish database connection
+ 	        Class.forName("com.mysql.cj.jdbc.Driver");
+ 	        Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
+
+ 	        // Create a SQL INSERT statement
+ 	        String sql = "INSERT INTO vehicle_service (date, time, location, mileage, vehicle_no, message, username) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+ 	        // Create a PreparedStatement
+ 	        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+ 	        // Set the parameter values (after applying HTML escaping)
+ 	        preparedStatement.setDate(1, new java.sql.Date(date.getTime()));
+ 	        preparedStatement.setTime(2, time);
+ 	        preparedStatement.setString(3, escapeHtml(location));
+ 	        preparedStatement.setInt(4, mileage);
+ 	        preparedStatement.setString(5, escapeHtml(vehicle_no));
+ 	        preparedStatement.setString(6, escapeHtml(message));
+ 	        preparedStatement.setString(7, escapeHtml(userName));
+
+ 	        // Execute the INSERT statement
+ 	        int rowsInserted = preparedStatement.executeUpdate();
+ 	        conn.close();
+
+ 	        // Check if the insertion was successful
+ 	        return rowsInserted;
+ 	    } catch (SQLException e) {
+ 	        e.printStackTrace();
+ 	        return -1; // Error during insertion
+ 	    }
     }
 
     public List<String> JavaToJavaScript(ResultSet resultSet) throws SQLException{
@@ -197,13 +189,13 @@ public ResultSet getPastServices(String username) throws ClassNotFoundException,
 
         while (resultSet.next()) {
             // Retrieve data from the ResultSet and construct a JavaScript object
-            int bookingId = resultSet.getInt("booking_id");
-            String date = resultSet.getString("date");
-            String time = resultSet.getString("time"); // Adjust type based on your data
-            String location = resultSet.getString("location");
+        	int bookingId = resultSet.getInt("booking_id");
+            String date = escapeHtml(resultSet.getString("date"));
+            String time = escapeHtml(resultSet.getString("time"));
+            String location = escapeHtml(resultSet.getString("location"));
             int mileage = resultSet.getInt("mileage");
-            String vehicleNo = resultSet.getString("vehicle_no");
-            String message1 = resultSet.getString("message");
+            String vehicleNo = escapeHtml(resultSet.getString("vehicle_no"));
+            String message1 = escapeHtml(resultSet.getString("message"));
 
             // Construct a JavaScript object using JSON-like notation
             String javascriptObject = String.format("{\"bookingId\": %d, \"date\": \"%s\", \"time\": \"%s\", \"location\": \"%s\", \"mileage\": %d, \"vehicleNo\": \"%s\", \"message\": \"%s\"}",
@@ -215,6 +207,19 @@ public ResultSet getPastServices(String username) throws ClassNotFoundException,
         return javascriptObjects;
         
     	
+    }
+    
+    
+    // Method to escape HTML characters
+    private String escapeHtml(String input) {
+        if (input == null) {
+            return "";
+        }
+        return input.replace("&", "&amp;")
+                    .replace("<", "&lt;")
+                    .replace(">", "&gt;")
+                    .replace("\"", "&quot;")
+                    .replace("'", "&#39;");
     }
     
 }

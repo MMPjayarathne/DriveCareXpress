@@ -37,6 +37,11 @@
                     // Set the username as a hidden field value in the form
                     document.getElementById('usernameField').value = username;
                  });
+                  document.getElementById('delete').addEventListener('click', function () {
+                    // Set the username as a hidden field value in the delete form
+                    document.getElementById('usernameForDelete').value = username;
+                 });
+                
                 
               
                 
