@@ -17,15 +17,15 @@ function updateReservations() {
         data: { username: username },
         dataType: 'json',
         success: function(response) {
-            console.log(response);
-            if (response.PastResultSetData !== undefined) {
-                                var pastReservations = response.PastResultSetData;
+            //console.log(response);
+            if (response.pastResultSetData !== undefined) {
+                var pastReservations = response.pastResultSetData;
                 // Update past reservations table
                 var pastTable = document.getElementById("pastTable");
 				clearTable('pastTable');
-               pastReservations.forEach(function(reservation) {
-		            var row = pastTable.insertRow();
-		            var data;
+               	pastReservations.forEach(function(reservation) {
+		         var row = pastTable.insertRow();
+		         var data;
 		            try {
 		                // Replace single quotes with double quotes for date and time properties
 		                data = JSON.parse(reservation.replace(/date: '([^']*)'/g, '"date": "$1"').replace(/time: '([^']*)'/g, '"time": "$1"'));

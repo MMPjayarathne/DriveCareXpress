@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="application/json; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.ArrayList, java.sql.*, java.util.List, com.services.jsp.*, org.json.simple.JSONArray, org.json.simple.JSONObject" %>
+<%@ page import="java.util.ArrayList, java.sql.*, java.util.List, com.services.dao.*, org.json.simple.JSONArray, org.json.simple.JSONObject" %>
 
 <%
     if (request.getParameter("username") != null) {
         ServiceDAO service = new ServiceDAO();
-        List<String> PastResultSetData = new ArrayList<>();
+        List<String> pastResultSetData = new ArrayList<>();
         List<String> futureResultSetData = new ArrayList<>();
         JSONObject jsonObject = new JSONObject();
         JSONArray pastJsonArray = new JSONArray();
@@ -13,33 +13,29 @@
         try {
             String username = request.getParameter("username");
             System.out.println("username: "+username);
-            ResultSet pastResultSet = service.getPastServices(username);
-            ResultSet futureResultSet = service.getFutureServices(username);
-			if(pastResultSet !=null){
-				PastResultSetData = service.JavaToJavaScript(pastResultSet);
-			}
-            if(futureResultSet != null){
-            	futureResultSetData = service.JavaToJavaScript(futureResultSet);
-            }
+    
+				pastResultSetData = service.getPastServices(username);
+            	futureResultSetData = service.getFutureServices(username);
+
             
 
-            if (PastResultSetData == null) {
-                PastResultSetData = new ArrayList<>();
+            if (pastResultSetData == null) {
+                pastResultSetData = new ArrayList<>();
             }
             if (futureResultSetData == null) {
                 futureResultSetData = new ArrayList<>();
             }
 
-            for (String data : PastResultSetData) {
+            for (String data : pastResultSetData) {
                 pastJsonArray.add(data);
             }
             for (String data : futureResultSetData) {
                 futureJsonArray.add(data);
             }
 
-            jsonObject.put("PastResultSetData", pastJsonArray);
+            jsonObject.put("pastResultSetData", pastJsonArray);
             jsonObject.put("futureResultSetData", futureJsonArray);
-            System.out.println("jsonObject: "+jsonObject);
+            //System.out.println("jsonObject: "+jsonObject);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             out.print(jsonObject.toJSONString());

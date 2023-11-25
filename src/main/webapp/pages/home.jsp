@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ page import="java.sql.*, java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="com.services.jsp.*" %>
+<%@ page import="com.services.dao.*" %>
 <%@ page import="java.io.InputStream, java.io.IOException" %>
 <%@ page import="java.util.Properties" %>
 <%@ page import="java.util.List" %>

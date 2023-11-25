@@ -1,4 +1,4 @@
-package com.services.jsp;
+package com.services.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,10 +20,11 @@ public class ServiceDAO {
 	String dbPassword = "EUHHaYAmtzbv";
 ;
 	
-    public ResultSet getFutureServices(String username) throws ClassNotFoundException, SQLException{
+    public List<String> getFutureServices(String username) throws ClassNotFoundException, SQLException{
     	
 		ResultSet futureResultSet = null;
 		Connection conn = null;
+	     List<String> futureResultSetData = new ArrayList<>();
 
 	try {
 		 // Load the MySQL JDBC driver
@@ -49,19 +50,25 @@ public class ServiceDAO {
 	    // Execute the SELECT queries
 		 futureResultSet = futurePreparedStatement.executeQuery();
 		 
+		 //convert to list
+		 futureResultSetData = JavaToJavaScript(futureResultSet);
+		//close the connection
+		 conn.close();
 	
 		}catch (SQLException e) {
 			e.printStackTrace();
 			
 			}
-	return futureResultSet;
+	return futureResultSetData;
         
     }
     
-public ResultSet getPastServices(String username) throws ClassNotFoundException, SQLException {
+public List<String> getPastServices(String username) throws ClassNotFoundException, SQLException {
     	
 			ResultSet pastResultSet = null;
 			Connection conn = null;
+			List<String> pastResultSetData = new ArrayList<>();
+		     
 		
 		try {
 		
@@ -86,12 +93,17 @@ public ResultSet getPastServices(String username) throws ClassNotFoundException,
 		// Execute the SELECT queries
 		pastResultSet = pastPreparedStatement.executeQuery();
 		
+		//convert to a list
+		pastResultSetData = JavaToJavaScript(pastResultSet);
+		//closing the connection
+		conn.close();
+		
 		
 			} catch (SQLException e) {
 			e.printStackTrace();
 			
 			}
-		return pastResultSet;
+		return pastResultSetData;
 
         
     }
