@@ -22,7 +22,7 @@ Also, user authentication and access control have been implemented using OIDC pr
 
 - If not download them and configure them to the project.
 
-- Run the index.jsp as the entry point on the Tomcat server (If you are not familiar with the Tomcat server refer to the below reference youtube tutorial for better understanding)
+- Run the index.jsp as the entry point on the Tomcat server (If you are not familiar with the Tomcat server refer to the below YouTube tutorial for better understanding)
 
 
 ### Hope this will be helpful!!
