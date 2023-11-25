@@ -15,9 +15,13 @@
             System.out.println("username: "+username);
             ResultSet pastResultSet = service.getPastServices(username);
             ResultSet futureResultSet = service.getFutureServices(username);
-
-            PastResultSetData = service.JavaToJavaScript(pastResultSet);
-            futureResultSetData = service.JavaToJavaScript(futureResultSet);
+			if(pastResultSet !=null){
+				PastResultSetData = service.JavaToJavaScript(pastResultSet);
+			}
+            if(futureResultSet != null){
+            	futureResultSetData = service.JavaToJavaScript(futureResultSet);
+            }
+            
 
             if (PastResultSetData == null) {
                 PastResultSetData = new ArrayList<>();
