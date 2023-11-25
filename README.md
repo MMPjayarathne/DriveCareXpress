@@ -2,12 +2,10 @@
 # DriveCareXpress
 
 A traditional web application for vehicle service reservation with a focus on security, authentication, and access control.
-
-
 This Web application is focused on mitigating the OWAPS top 10 vulnerabilities, mostly focusing on Broken Access Control, SQL Injection, and Cross-Site Scripting (XSS).
 Also, user authentication and access control have been implemented using OIDC protocols with a cloud-based Identity Provider (IDP), Asgardeo.
 
-
+![Logo](src/main/webapp/images/DriveCareXpress.jpeg)
 
 
 ## Roadmap to Deploy
