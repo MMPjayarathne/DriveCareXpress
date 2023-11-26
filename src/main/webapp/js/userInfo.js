@@ -17,7 +17,7 @@
 
         $.ajax(settings)
             .done(function (response) {
-                console.log(response);
+                //console.log(response);
                 username =  response.username;
                 var given_name = response.given_name;
                 var phone = response.phone_number;
@@ -26,7 +26,7 @@
                 var firstName = parts[0];
                 var address = response.address;
                 var country = address.country;
-                console.log(country);
+                //console.log(country);
                 document.getElementById('givenName').textContent = given_name;
                 document.getElementById('name').textContent = firstName;
                 document.getElementById('email').textContent = email;

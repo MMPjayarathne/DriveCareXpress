@@ -119,7 +119,7 @@ try {
 
 </script>
 <script type="text/javascript"  src="../js/userInfo.js"></script>
-<script type="text/javascript"  src="../js/logout.js"></script>
+
 
 <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -234,12 +234,12 @@ try {
   
   </div>
   <div class="actions">
-  		
+  		<!-- Logout form  -->
   	  <form id="logout-form" action="<%= properties.getProperty("logoutEndpoint") %>" method="POST">
         <input type="hidden" id="client-id" name="client_id" value="">
         <input type="hidden" id="post-logout-redirect-uri" name="post_logout_redirect_uri" value="">
         <input type="hidden" id="state" name="state" value="">
-        <button type="submit">Logout</button>
+        <button type="submit" id="logout" >Logout</button>
     </form>
   
 
@@ -438,6 +438,7 @@ try {
 
 
 <script type="text/javascript"  src="../js/home.js"></script>
+<script type="text/javascript"  src="../js/logout.js"></script>
 
 </body>
 

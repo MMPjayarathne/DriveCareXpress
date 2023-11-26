@@ -68,7 +68,7 @@
             $.ajax(url, requestOptions)
                 .done(function (data) {
                   	// Handle the response data here
-                    console.log(data.access_token);
+                    //console.log(data.access_token);
                     var access_token  = data.access_token;
                    	var id_token = data.access_token;
                    	localStorage.setItem('access_token', access_token);
